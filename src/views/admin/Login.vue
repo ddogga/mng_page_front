@@ -11,12 +11,14 @@
                     <h3 class="text-center font-weight-light my-4">Login</h3>
                   </div>
                   <div class="card-body">
-                    <form>
+                    <form @submit.prevent="loginProcess">
                       <div class="form-floating mb-3">
                         <input
                           class="form-control"
                           type="text"
                           placeholder="ID"
+                          v-model="id"
+                          required
                         />
                         <label for="inputEmail">ID</label>
                       </div>
@@ -26,6 +28,8 @@
                           id="inputPassword"
                           type="password"
                           placeholder="Password"
+                          v-model="password"
+                          required
                         />
                         <label for="inputPassword">Password</label>
                       </div>
@@ -35,13 +39,17 @@
                         <a class="small" href="password.html"
                           >Forgot Password?</a
                         >
-                        <a class="btn btn-primary" href="index.html">Login</a>
+                        <button type="submit" class="btn btn-primary">
+                          Login
+                        </button>
                       </div>
                     </form>
                   </div>
                   <div class="card-footer text-center py-3">
                     <div class="small">
-                      <a href="register.html">Need an account? Sign up!</a>
+                      <router-link to="/shop/join">
+                        <span>Need an account? Sign up!</span>
+                      </router-link>
                     </div>
                   </div>
                 </div>
@@ -64,6 +72,39 @@ export default {
   emits: ["parent_getSession"],
   setup(props, context) {
     context.emit("parent_getSession", "login");
+
+    const router = useRouter();
+
+    const id = ref("");
+    const password = ref("");
+
+    const loginProcess = async () => {
+      try {
+        const res = await axios.post("api/users/admin/login", {
+          id: id.value,
+          password: password.value,
+        });
+        console.log("login.vue:res.data=" + res.data);
+        const result = res.data;
+        if (result == -1) {
+          alert("아이디가 존재하지 않습니다.");
+        } else if (result == 0) {
+          alert("비밀번호가 일치하지 않습니다.");
+        } else if (result == 1) {
+          router.push({
+            name: "Main",
+          });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    return {
+      id,
+      password,
+      loginProcess,
+    };
   },
 };
 </script>
