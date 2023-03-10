@@ -41,7 +41,7 @@
           aria-controls="collapseTwo"
         >
           <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
+          <span>회원 관리</span>
         </a>
         <div
           id="collapseTwo"
