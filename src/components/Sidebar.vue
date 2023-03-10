@@ -51,7 +51,9 @@
         >
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
+            <router-link to="/shop/user_list" class="collapse-item">
+              회원 조회/수정
+            </router-link>
             <a class="collapse-item" href="cards.html">Cards</a>
           </div>
         </div>

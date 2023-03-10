@@ -3,6 +3,8 @@ import Login from "../views/admin/Login.vue";
 import Join from "../views/admin/Join.vue";
 import Dashboard from "../views/Dashboard.vue";
 
+import UserList from "../views/admin/UserList.vue";
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -28,6 +30,11 @@ const router = createRouter({
       path: "/shop/dashboard",
       name: "Dashboard",
       component: Dashboard,
+    },
+    {
+      path: "/shop/user_list",
+      name: "UserList",
+      component: UserList,
     },
   ],
 });
