@@ -98,7 +98,9 @@ import axios from "../../axios/axiossetting";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 export default {
-  setup() {
+  setup(props, context) {
+    context.emit("parent_getSession", "join");
+
     const router = useRouter();
 
     const id_message = ref("");

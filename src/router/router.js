@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Main from "../views/Main.vue";
 import Login from "../views/admin/Login.vue";
 import Join from "../views/admin/Join.vue";
+import Dashboard from "../views/Dashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,9 +25,9 @@ const router = createRouter({
       component: Join,
     },
     {
-      path: "/shop/main",
-      name: "Main",
-      component: Main,
+      path: "/shop/dashboard",
+      name: "Dashboard",
+      component: Dashboard,
     },
   ],
 });

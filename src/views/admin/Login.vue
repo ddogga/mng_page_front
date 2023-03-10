@@ -92,7 +92,7 @@ export default {
           alert("비밀번호가 일치하지 않습니다.");
         } else if (result == 1) {
           router.push({
-            name: "Main",
+            name: "Dashboard",
           });
         }
       } catch (err) {
