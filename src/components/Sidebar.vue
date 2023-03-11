@@ -83,11 +83,9 @@
             <router-link to="/shop/new_item" class="collapse-item">
               상품 등록
             </router-link>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html"
-              >Animations</a
-            >
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+            <router-link to="/shop/item_list" class="collapse-item">
+              상품 관리
+            </router-link>
           </div>
         </div>
       </li>
