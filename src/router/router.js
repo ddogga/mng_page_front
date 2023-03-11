@@ -4,6 +4,7 @@ import Join from "../views/admin/Join.vue";
 import Dashboard from "../views/Dashboard.vue";
 
 import UserList from "../views/admin/UserList.vue";
+import NewItem from "../views/admin/NewItem.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -35,6 +36,11 @@ const router = createRouter({
       path: "/shop/user_list",
       name: "UserList",
       component: UserList,
+    },
+    {
+      path: "/shop/new_item",
+      name: "NewItem",
+      component: NewItem,
     },
   ],
 });

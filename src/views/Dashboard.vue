@@ -25,7 +25,7 @@
                   Earnings (Monthly)
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                  $40,000
+                  ${{ monthlyIncom }}
                 </div>
               </div>
               <div class="col-auto">
@@ -48,7 +48,7 @@
                   Earnings (Annual)
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                  $215,000
+                  ${{ annualIncom }}
                 </div>
               </div>
               <div class="col-auto">
@@ -229,6 +229,37 @@ export default {
   setup(props, context) {
     context.emit("parent_getSession", "");
     const router = useRouter();
+
+    const monthlyIncom = ref(0);
+    const annualIncom = ref(0);
+
+    const getMonthlyIncom = async () => {
+      try {
+        const res = await axios.get("api/income/monthly");
+        console.log(res.data);
+        monthlyIncom.value = res.data.result;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const getAnnualIncom = async () => {
+      try {
+        const res = await axios.get("api/income/annual");
+        console.log(res.data);
+        annualIncom.value = res.data;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getMonthlyIncom();
+    getAnnualIncom();
+
+    return {
+      monthlyIncom,
+      annualIncom,
+    };
   },
 };
 </script>

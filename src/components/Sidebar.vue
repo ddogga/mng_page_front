@@ -50,7 +50,7 @@
           data-parent="#accordionSidebar"
         >
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
+            <h6 class="collapse-header">회원 관리</h6>
             <router-link to="/shop/user_list" class="collapse-item">
               회원 조회/수정
             </router-link>
@@ -70,7 +70,7 @@
           aria-controls="collapseUtilities"
         >
           <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
+          <span>상품 관리</span>
         </a>
         <div
           id="collapseUtilities"
@@ -79,8 +79,10 @@
           data-parent="#accordionSidebar"
         >
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
+            <h6 class="collapse-header">상품 관리</h6>
+            <router-link to="/shop/new_item" class="collapse-item">
+              상품 등록
+            </router-link>
             <a class="collapse-item" href="utilities-border.html">Borders</a>
             <a class="collapse-item" href="utilities-animation.html"
               >Animations</a
