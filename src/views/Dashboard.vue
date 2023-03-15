@@ -155,12 +155,7 @@
               </div>
             </div>
           </div>
-          <!-- Card Body -->
-          <div class="card-body">
-            <div class="chart-area">
-              <canvas id="myAreaChart"></canvas>
-            </div>
-          </div>
+          <LineChart />
         </div>
       </div>
 
@@ -225,7 +220,16 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "../axios/axiossetting.js";
 
+import LineChart from "../components/dashboard/LineChart.vue";
+
+// import "../assets/vendor/chart.js/Chart.min.js";
+// import "../assets/js/demo/chart-area-demo.js";
+// import "../assets/js/demo/chart-pie-demo.js";
+
 export default {
+  components: {
+    LineChart,
+  },
   setup(props, context) {
     context.emit("parent_getSession", "");
     const router = useRouter();
@@ -236,7 +240,6 @@ export default {
     const getMonthlyIncom = async () => {
       try {
         const res = await axios.get("api/income/monthly");
-        console.log(res.data);
         monthlyIncom.value = res.data.result;
       } catch (err) {
         console.error(err);
@@ -246,7 +249,6 @@ export default {
     const getAnnualIncom = async () => {
       try {
         const res = await axios.get("api/income/annual");
-        console.log(res.data);
         annualIncom.value = res.data;
       } catch (err) {
         console.error(err);
@@ -262,6 +264,7 @@ export default {
     };
   },
 };
+// import "../assets/js/sb-admin-2.min.js";
 </script>
 
 <style scoped></style>

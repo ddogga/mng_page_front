@@ -18,11 +18,11 @@ import "@/assets/vendor/jquery-easing/jquery.easing.min.js";
 // import "@/assets/js/sb-admin-2.min.js";
 
 // Page level plugins
-import "@/assets/vendor/chart.js/Chart.min.js";
+// import "@/assets/vendor/chart.js/Chart.min.js";
 
 // Page level custom scripts
-import "@/assets/js/demo/chart-area-demo.js";
-import "@/assets/js/demo/chart-pie-demo.js";
+// import "@/assets/js/demo/chart-area-demo.js";
+// import "@/assets/js/demo/chart-pie-demo.js";
 
 // ==========================================
 // Style
