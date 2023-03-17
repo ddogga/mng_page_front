@@ -122,7 +122,7 @@ export default {
       try {
         console.log("idcheck=" + join.value.id);
         //const res = await axios.get(`members/idcheck?id{join.value.id}`);
-        const res = await axios.get("api/users/idcheck", {
+        const res = await axios.get("api/user/idcheck", {
           params: { id: join.value.id },
         });
         console.log("res.data=" + res.data);
@@ -190,7 +190,7 @@ export default {
         alert("비밀번호를 확인하세요");
       } else {
         try {
-          const res = await axios.post("api/users/admin/new", join.value);
+          const res = await axios.post("api/user/admin/new", join.value);
           if (res.data) {
             console.log(res.data);
             alert(res.data.name + "님 회원 가입을 축하합니다.");

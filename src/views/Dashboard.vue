@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+      <h1 class="h3 mb-0 text-gray-800">관리자 대시보드</h1>
       <a
         href="#"
         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
@@ -155,6 +155,7 @@
               </div>
             </div>
           </div>
+          <!-- Card Body -->
           <LineChart />
         </div>
       </div>
@@ -192,22 +193,8 @@
             </div>
           </div>
           <!-- Card Body -->
-          <div class="card-body">
-            <div class="chart-pie pt-4 pb-2">
-              <canvas id="myPieChart"></canvas>
-            </div>
-            <div class="mt-4 text-center small">
-              <span class="mr-2">
-                <i class="fas fa-circle text-primary"></i> Direct
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-success"></i> Social
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-info"></i> Referral
-              </span>
-            </div>
-          </div>
+
+          <PieChart />
         </div>
       </div>
     </div>
@@ -221,14 +208,12 @@ import { useRouter } from "vue-router";
 import axios from "../axios/axiossetting.js";
 
 import LineChart from "../components/dashboard/LineChart.vue";
-
-// import "../assets/vendor/chart.js/Chart.min.js";
-// import "../assets/js/demo/chart-area-demo.js";
-// import "../assets/js/demo/chart-pie-demo.js";
+import PieChart from "../components/dashboard/PieChart.vue";
 
 export default {
   components: {
     LineChart,
+    PieChart,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");

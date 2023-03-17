@@ -60,7 +60,7 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from "../../axios/axiossetting.js";
+import axios from "@/axios/axiossetting.js";
 
 export default {
   setup(props, context) {

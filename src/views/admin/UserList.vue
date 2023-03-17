@@ -67,7 +67,7 @@ export default {
 
     const getUsers = async () => {
       try {
-        const res = await axios.get("api/users/role_users", {
+        const res = await axios.get("api/user/role_users", {
           params: { role: "user" },
         });
         console.log(res.data);
@@ -82,7 +82,7 @@ export default {
       const answer = confirm("정말 삭제하시겠습니까?");
       if (answer) {
         try {
-          const res = await axios.delete("api/users", {
+          const res = await axios.delete("api/user", {
             params: { id: id },
           });
           console.log(res.data);

@@ -80,7 +80,7 @@ export default {
 
     const loginProcess = async () => {
       try {
-        const res = await axios.post("api/users/admin/login", {
+        const res = await axios.post("api/user/admin/login", {
           id: id.value,
           password: password.value,
         });

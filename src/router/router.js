@@ -4,8 +4,8 @@ import Join from "../views/admin/Join.vue";
 import Dashboard from "../views/Dashboard.vue";
 
 import UserList from "../views/admin/UserList.vue";
-import NewItem from "../views/admin/NewItem.vue";
-import ItemList from "../views/admin/ItemList.vue";
+import NewItem from "../views/admin/item/NewItem.vue";
+import ItemList from "../views/admin/item/ItemList.vue";
 
 const router = createRouter({
   history: createWebHistory(),
