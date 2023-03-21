@@ -156,7 +156,7 @@
             </div>
           </div>
           <!-- Card Body -->
-          <LineChart />
+          <LineChart :props_data="monthly" />
         </div>
       </div>
 
@@ -203,10 +203,11 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "../axios/axiossetting.js";
 
+// import LineChart from "../components/dashboard/LineChart.vue";
 import LineChart from "../components/dashboard/LineChart.vue";
 import PieChart from "../components/dashboard/PieChart.vue";
 
@@ -243,13 +244,25 @@ export default {
     getMonthlyIncom();
     getAnnualIncom();
 
+    const monthly = ref([]);
+
+    onMounted(async () => {
+      try {
+        const res = await axios.get("api/incomes/monthly");
+        console.log("Dashboard=", res.data);
+        monthly.value = res.data;
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
     return {
       monthlyIncom,
       annualIncom,
+      monthly,
     };
   },
 };
-// import "../assets/js/sb-admin-2.min.js";
 </script>
 
 <style scoped></style>

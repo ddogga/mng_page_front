@@ -11,9 +11,6 @@
       <i class="fa fa-bars"></i>
     </button>
 
-
-
-
     <!-- Topbar Search -->
     <form
       class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
@@ -161,7 +158,7 @@
             <div class="dropdown-list-image mr-3">
               <img
                 class="rounded-circle"
-                src="img/undraw_profile_1.svg"
+                src="@/assets/img/undraw_profile_1.svg"
                 alt="..."
               />
               <div class="status-indicator bg-success"></div>
@@ -178,7 +175,7 @@
             <div class="dropdown-list-image mr-3">
               <img
                 class="rounded-circle"
-                src="img/undraw_profile_2.svg"
+                src="@/assets/img/undraw_profile_2.svg"
                 alt="..."
               />
               <div class="status-indicator"></div>
@@ -195,7 +192,7 @@
             <div class="dropdown-list-image mr-3">
               <img
                 class="rounded-circle"
-                src="img/undraw_profile_3.svg"
+                src="@/assets/img/undraw_profile_3.svg"
                 alt="..."
               />
               <div class="status-indicator bg-warning"></div>
@@ -249,7 +246,7 @@
           >
           <img
             class="img-profile rounded-circle"
-            src="img/undraw_profile.svg"
+            src="@/assets/img/undraw_profile.svg"
           />
         </a>
         <!-- Dropdown - User Information -->
