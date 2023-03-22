@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import "@/assets/js/sb-admin-2.min.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "./axios/axiossetting.js";

@@ -130,7 +130,7 @@
           <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
           >
-            <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+            <h6 class="m-0 font-weight-bold text-primary">연간 매출 현황</h6>
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -148,15 +148,17 @@
                 aria-labelledby="dropdownMenuLink"
               >
                 <div class="dropdown-header">Dropdown Header:</div>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" href="#" @click="changeChart('매출액')"
+                  >매출</a
+                >
+                <a class="dropdown-item" href="#" @click="changeChart('주문수')"
+                  >주문수</a
+                >
               </div>
             </div>
           </div>
           <!-- Card Body -->
-          <LineChart :props_data="monthly" />
+          <LineChart :props_data="monthly" :select_data="select_data" />
         </div>
       </div>
 
@@ -167,7 +169,7 @@
           <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
           >
-            <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+            <h6 class="m-0 font-weight-bold text-primary">인기 상품 순위</h6>
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -194,7 +196,7 @@
           </div>
           <!-- Card Body -->
 
-          <PieChart />
+          <PieChart :items="items" />
         </div>
       </div>
     </div>
@@ -244,7 +246,9 @@ export default {
     getMonthlyIncom();
     getAnnualIncom();
 
+    // LineChart
     const monthly = ref([]);
+    const select_data = ref("매출액");
 
     onMounted(async () => {
       try {
@@ -256,10 +260,28 @@ export default {
       }
     });
 
+    const changeChart = (seleted) => {
+      select_data.value = seleted;
+    };
+
+    const items = ref([]);
+    onMounted(async () => {
+      try {
+        const res = await axios.get("api/item/ranking");
+        console.log("Dashboard=", res.data);
+        items.value = res.data;
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
     return {
       monthlyIncom,
       annualIncom,
       monthly,
+      select_data,
+      changeChart,
+      items,
     };
   },
 };

@@ -19,6 +19,9 @@ export default {
     props_data: {
       type: Array,
     },
+    select_data: {
+      type: String,
+    },
   },
   components: {
     Vue3ChartJs,
@@ -27,6 +30,8 @@ export default {
     const chartRef = ref(null);
 
     const monthlyIncoms = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const monthlyProfits = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const monthlyCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     const month = [
       "January",
@@ -55,36 +60,42 @@ export default {
       "December",
     ];
     const currentMonth = ref("");
+    const currentMonthRange = ref([
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ]);
 
     const lineChart = {
       type: "line",
       data: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ],
-        datasets: [
-          {
-            label: "My First dataset",
-            backgroundColor: "rgba(54, 162, 235, 0.5)",
-            borderColor: "rgb(54, 162, 235)",
-            borderWidth: 1,
-            data: monthlyIncoms,
-          },
-        ],
+        labels: Array.from(currentMonthRange),
+        datasets: [],
       },
       options: {
-        plugins: {},
+        interaction: {
+          mode: "index",
+        },
+        plugins: {
+          tooltip: {
+            usePointStyle: true,
+          },
+          legend: {
+            position: "bottom",
+            labels: {
+              usePointStyle: true,
+            },
+          },
+        },
         scales: {
           y: {
             ticks: {
@@ -101,9 +112,7 @@ export default {
             },
           },
         },
-        legend: {
-          display: true,
-        },
+
         responsive: true,
         maintainAspectRatio: false,
       },
@@ -113,23 +122,79 @@ export default {
       () => props.props_data,
       (next, prev) => {
         console.log("props_data 변경");
+        init();
         updateChart();
       }
     );
 
+    watch(
+      () => props.select_data,
+      (next, prev) => {
+        console.log("select_data 변경");
+        changeChart();
+      }
+    );
+
+    const changeChart = () => {
+      lineChart.data.datasets[0].label = props.select_data;
+      if (props.select_data == "매출액") {
+        updateChart();
+      } else if (props.select_data == "주문수") {
+        lineChart.data.datasets = [];
+        lineChart.data.datasets.push({
+          label: "주문수",
+          backgroundColor: "rgba(54, 162, 235, 0.5)",
+          borderColor: "rgb(54, 162, 235)",
+          borderWidth: 2,
+          pointStyle: "rectRot",
+          pointRadius: 4,
+          data: monthlyCount,
+        });
+      }
+
+      chartRef.value.update();
+    };
+
     const updateChart = () => {
+      console.log("updateChart");
       lineChart.data.labels = getLabels();
-      lineChart.data.datasets[0].data = getMonthlyIncoms();
+      lineChart.data.datasets = [];
+      lineChart.data.datasets.push(
+        {
+          label: "매출액",
+          backgroundColor: "#F5F5F8",
+          borderColor: "rgb(187, 145, 255)",
+          borderWidth: 2,
+          pointStyle: "rectRounded",
+          pointRadius: 4,
+          data: monthlyIncoms,
+        },
+        {
+          label: "순이익",
+          backgroundColor: "#F5F5F8",
+          borderColor: "rgb(17, 145, 255)",
+          borderWidth: 2,
+          pointStyle: "rect",
+          pointRadius: 4,
+          data: monthlyProfits,
+        }
+      );
+
       chartRef.value.update();
     };
 
     const getLabels = () => {
-      currentMonth.value =
-        props.props_data[props.props_data.length - 1].orderMonth;
-      return month.slice(currentMonth.value, currentMonth.value + 12);
+      currentMonthRange.value = month.slice(
+        currentMonth.value,
+        currentMonth.value + 12
+      );
+      return currentMonthRange.value;
     };
 
-    const getMonthlyIncoms = () => {
+    const init = () => {
+      console.log("init");
+      currentMonth.value =
+        props.props_data[props.props_data.length - 1].orderMonth;
       for (let i = 0; i < props.props_data.length; i++) {
         let index = 0;
         if (props.props_data[i].orderMonth <= currentMonth.value) {
@@ -138,8 +203,9 @@ export default {
           index = props.props_data[i].orderMonth - currentMonth.value - 1;
         }
         monthlyIncoms[index] = props.props_data[i].totalIncome;
+        monthlyCount[index] = props.props_data[i].totalCount;
+        monthlyProfits[index] = props.props_data[i].totalProfit;
       }
-      return monthlyIncoms;
     };
 
     return {
