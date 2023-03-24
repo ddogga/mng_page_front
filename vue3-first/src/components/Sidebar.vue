@@ -92,7 +92,7 @@
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <router-link class="nav-link" to="/shop/calender">
+        <router-link class="nav-link" to="/shop/calendar">
           <i class="fas fa-fw fa-table"></i>
           <span>일정 관리</span></router-link
         >
