@@ -2,7 +2,7 @@
   <div>
     <!-- Sidebar -->
     <ul
-      class="navbar-nav bg-success sidebar sidebar-dark accordion"
+      class="navbar-nav bg-dark sidebar sidebar-dark accordion"
       id="accordionSidebar"
     >
       <!-- Sidebar - Brand -->
@@ -90,6 +90,14 @@
         </div>
       </li>
 
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <router-link class="nav-link" to="/shop/calender">
+          <i class="fas fa-fw fa-table"></i>
+          <span>일정 관리</span></router-link
+        >
+      </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider" />
 
@@ -135,14 +143,6 @@
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span></a
-        >
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a
         >
       </li>
 

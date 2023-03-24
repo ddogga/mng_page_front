@@ -3,11 +3,11 @@
   <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <h1 class="h3 mb-0 text-gray-800">관리자 대시보드</h1>
+      <h1 class="h3 mb-0 text-white">관리자 대시보드</h1>
       <a
         href="#"
         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-        ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a
+        ><i class="fas fa-download fa-sm text-white"></i> Generate Report</a
       >
     </div>
 
@@ -16,7 +16,7 @@
       <!-- Earnings (Monthly) Card Example -->
       <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
-          <div class="card-body">
+          <div class="card-body" style="color = w">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div
@@ -24,7 +24,7 @@
                 >
                   Earnings (Monthly)
                 </div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                <div class="h5 mb-0 font-weight-bold text-white">
                   ${{ monthlyIncom }}
                 </div>
               </div>
@@ -47,7 +47,7 @@
                 >
                   Earnings (Annual)
                 </div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                <div class="h5 mb-0 font-weight-bold text-white">
                   ${{ annualIncom }}
                 </div>
               </div>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-white">
                       50%
                     </div>
                   </div>
@@ -109,12 +109,134 @@
                 >
                   Pending Requests
                 </div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                <div class="h5 mb-0 font-weight-bold text-white">18</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-comments fa-2x text-gray-300"></i>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Row -->
+
+    <div class="row">
+      <!-- Area Chart -->
+      <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div
+            class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          >
+            <h6 class="m-0 font-weight-bold text-white">연간 매출 현황</h6>
+            <div class="dropdown no-arrow">
+              <a
+                class="dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                aria-labelledby="dropdownMenuLink"
+              >
+                <div class="dropdown-header">Dropdown Header:</div>
+                <a class="dropdown-item" href="#" @click="changeChart('매출액')"
+                  >매출</a
+                >
+                <a class="dropdown-item" href="#" @click="changeChart('주문수')"
+                  >주문수</a
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div
+            class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          >
+            <h6 class="m-0 font-weight-bold text-white">인기 상품 순위</h6>
+            <div class="dropdown no-arrow">
+              <a
+                class="dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                aria-labelledby="dropdownMenuLink"
+              >
+                <div class="dropdown-header">Dropdown Header:</div>
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div
+            class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          >
+            <h6 class="m-0 font-weight-bold text-white">인기 상품 순위</h6>
+            <div class="dropdown no-arrow">
+              <a
+                class="dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                aria-labelledby="dropdownMenuLink"
+              >
+                <div class="dropdown-header">Dropdown Header:</div>
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area"></div>
           </div>
         </div>
       </div>
@@ -130,7 +252,7 @@
           <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
           >
-            <h6 class="m-0 font-weight-bold text-primary">연간 매출 현황</h6>
+            <h6 class="m-0 font-weight-bold text-white">연간 매출 현황</h6>
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -169,7 +291,7 @@
           <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
           >
-            <h6 class="m-0 font-weight-bold text-primary">인기 상품 순위</h6>
+            <h6 class="m-0 font-weight-bold text-white">인기 상품 순위</h6>
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -287,4 +409,15 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+  background: rgb(104, 104, 104);
+}
+.card-body {
+  background: rgb(77, 77, 77);
+}
+
+.card-header {
+  background: rgb(61, 61, 61);
+}
+</style>

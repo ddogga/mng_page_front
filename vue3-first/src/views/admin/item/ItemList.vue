@@ -24,10 +24,11 @@
               <table class="table">
                 <thead class="table-light">
                   <th>#</th>
-                  <th>Id</th>
-                  <th>가입일</th>
-                  <th>회원 분류</th>
-                  <th>회원 삭제</th>
+                  <th>상품명</th>
+                  <th>상품 가격</th>
+                  <th>재고 수량</th>
+                  <th>판매 상태</th>
+                  <th>상품 정보 수정</th>
                 </thead>
                 <tbody>
                   <tr v-for="(item, index) in items" :key="index">
@@ -35,12 +36,13 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.price }}</td>
                     <td>{{ item.stockQuantity }}</td>
+                    <td>{{ item.itemStatus }}</td>
                     <td>
                       <button
-                        class="btn btn-danger btn-sm"
+                        class="btn btn-info btn-sm"
                         @click="deleteItem(item.id)"
                       >
-                        삭제
+                        수정
                       </button>
                     </td>
                   </tr>
@@ -72,6 +74,7 @@ export default {
     const getItems = async () => {
       try {
         const res = await axios.get("api/items");
+        console.log(res.data);
         items.value = res.data;
         count.value = items.value.length;
       } catch (err) {

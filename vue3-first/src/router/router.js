@@ -6,6 +6,7 @@ import Dashboard from "../views/Dashboard.vue";
 import UserList from "../views/admin/UserList.vue";
 import NewItem from "../views/admin/item/NewItem.vue";
 import ItemList from "../views/admin/item/ItemList.vue";
+import Calender from "../views/admin/Calender.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -47,6 +48,11 @@ const router = createRouter({
       path: "/shop/item_list",
       name: "ItemList",
       component: ItemList,
+    },
+    {
+      path: "/shop/calender",
+      name: "Calender",
+      component: Calender,
     },
   ],
 });

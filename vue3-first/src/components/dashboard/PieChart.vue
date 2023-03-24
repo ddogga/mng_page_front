@@ -44,8 +44,8 @@ export default {
     // };
     const chartRef = ref(null);
     const colors = [
-      "#4B994B",
-      "#D075CA",
+      "#958FF6",
+      "#EADA80",
       "#4363DE",
       "#F4F284",
       "#FE943F",
