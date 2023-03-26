@@ -83,7 +83,6 @@ export default {
 
       if (title) {
         calendarApi.addEvent({
-          id: createEventId(),
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
@@ -145,6 +144,8 @@ export default {
       dayMaxEvents: true,
       weekends: true,
       eventLimit: true, // '달력상에 셀 크기보다 많은 이벤트가 등록되어 있는 경우 more로 표기함'
+      eventColor: "#378006",
+
       select: handleDateSelect,
       eventClick: handleEventClick,
       eventsSet: handleEvents,
@@ -159,7 +160,8 @@ export default {
         {
           title: "event 1",
           start: "2023-03-09T12:30:00",
-          end: "2023-03-22T12:30:00",
+          end: "2023-03-13T11:30:00",
+          allDay: false,
         },
       ],
     });
@@ -173,7 +175,7 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style scoped>
 h2 {
   margin: 0;
   font-size: 16px;
