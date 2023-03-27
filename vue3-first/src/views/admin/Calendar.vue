@@ -50,7 +50,11 @@
     <!-- 일정 추가 Popup -->
     <div class="popup-view popup-background" :class="{ active: popupView }">
       <div class="popup-window">
-        <NewEventPopup class="pop-up" @close-popup="openPopup"></NewEventPopup>
+        <NewEventPopup
+          :selectDateInfo="selectDateInfo"
+          class="pop-up"
+          @close-popup="openPopup"
+        ></NewEventPopup>
       </div>
     </div>
   </div>
@@ -80,14 +84,17 @@ export default {
       calendarOptions.value.weekends = !calendarOptions.value.weekends; // update a property
     };
 
+    const selectDateInfo = ref({});
+
     /**
      * 달력 셀 클릭 시 발생 이벤트
      * @param {선택한 날짜 정보} selectInfo
      */
     const handleDateSelect = (selectInfo) => {
-      openPopup();
-
       let calendarApi = selectInfo.view.calendar;
+      selectDateInfo.value = selectInfo;
+
+      openPopup();
 
       calendarApi.unselect(); // clear date selection
 
@@ -180,6 +187,7 @@ export default {
 
     // 일정 등록 Popup
     const popupView = ref(false);
+
     const openPopup = () => {
       popupView.value = popupView.value ? false : true;
     };
@@ -190,6 +198,7 @@ export default {
       handleWeekendsToggle,
       popupView,
       openPopup,
+      selectDateInfo,
     };
   },
 };

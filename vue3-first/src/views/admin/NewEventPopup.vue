@@ -69,14 +69,14 @@
           >
           <textarea
             rows="4"
-            cols="25"
+            cols="27"
             name="edit-desc"
             id="edit-desc"
           ></textarea>
         </div>
       </div>
     </div>
-    <div class="modal-footer" :class="{ addEvent: add }">
+    <div v-show="add" class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">
         취소
       </button>
@@ -84,7 +84,7 @@
         저장
       </button>
     </div>
-    <div class="modal-footer" :class="{ modifyEvent: modify }">
+    <div v-show="modify" class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">
         닫기
       </button>
@@ -99,19 +99,32 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 export default {
+  props: {
+    selectDateInfo: {
+      type: Object,
+    },
+  },
   emits: ["close-popup"],
   setup(props, context) {
     const add = ref(true);
     const modify = ref(false);
     const closePopup = () => {
-      console.log("ee");
       context.emit("close-popup");
     };
 
+    watch(
+      () => props.selectDateInfo,
+      (next, prev) => {
+        console.log("tt");
+      }
+    );
+
     return {
       closePopup,
+      add,
+      modify,
     };
   },
 };
