@@ -46,27 +46,36 @@
         </FullCalendar>
       </div>
     </div>
+
+    <!-- 일정 추가 Popup -->
+    <div class="popup-view popup-background" :class="{ active: popupView }">
+      <div class="popup-window">
+        <NewEventPopup class="pop-up" @close-popup="openPopup"></NewEventPopup>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref, watch } from "vue";
 import { defineComponent } from "vue";
-import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "./js/event-utils";
 
+import FullCalendar from "@fullcalendar/vue3";
+import NewEventPopup from "./NewEventPopup.vue";
+
 export default {
   components: {
     FullCalendar,
+    NewEventPopup,
   },
   setup() {
     const currentEvents = ref([]);
 
     // methods :
-
     const handleWeekendsToggle = () => {
       calendarOptions.value.weekends = !calendarOptions.value.weekends; // update a property
     };
@@ -76,19 +85,20 @@ export default {
      * @param {선택한 날짜 정보} selectInfo
      */
     const handleDateSelect = (selectInfo) => {
-      let title = prompt("Please enter a new title for your event");
+      openPopup();
+
       let calendarApi = selectInfo.view.calendar;
 
       calendarApi.unselect(); // clear date selection
 
-      if (title) {
-        calendarApi.addEvent({
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
-        });
-      }
+      // if (title) {
+      //   calendarApi.addEvent({
+      //     title,
+      //     start: selectInfo.startStr,
+      //     end: selectInfo.endStr,
+      //     allDay: selectInfo.allDay,
+      //   });
+      // }
     };
 
     /**
@@ -144,6 +154,8 @@ export default {
       dayMaxEvents: true,
       weekends: true,
       eventLimit: true, // '달력상에 셀 크기보다 많은 이벤트가 등록되어 있는 경우 more로 표기함'
+      displayEventTime: true,
+      displayEventEnd: true,
       eventColor: "#378006",
 
       select: handleDateSelect,
@@ -166,10 +178,18 @@ export default {
       ],
     });
 
+    // 일정 등록 Popup
+    const popupView = ref(false);
+    const openPopup = () => {
+      popupView.value = popupView.value ? false : true;
+    };
+
     return {
       calendarOptions,
       currentEvents,
       handleWeekendsToggle,
+      popupView,
+      openPopup,
     };
   },
 };
@@ -223,5 +243,50 @@ b {
   /* the calendar root */
   max-width: 1100px;
   margin: 0 auto;
+}
+
+/* PopUp */
+
+.popup-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.popup-window {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pop-up {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+  padding: 0;
+
+  /* 임시 지정 */
+  width: 500px;
+  height: 500px;
+
+  /* 초기에 약간 아래에 배치 */
+  transform: translate(-10%, -70%);
+}
+
+.popup-view {
+  opacity: 0;
+  display: none;
+  visibility: hidden;
+}
+.active {
+  opacity: 1;
+  display: block;
+  visibility: visible;
 }
 </style>
