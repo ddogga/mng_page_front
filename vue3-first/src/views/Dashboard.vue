@@ -148,12 +148,10 @@
                 aria-labelledby="dropdownMenuLink"
               >
                 <div class="dropdown-header">Dropdown Header:</div>
-                <a class="dropdown-item" href="#" @click="changeChart('매출액')"
-                  >매출</a
-                >
-                <a class="dropdown-item" href="#" @click="changeChart('주문수')"
-                  >주문수</a
-                >
+                <p class="dropdown-item" @click="changeChart('매출액')">매출</p>
+                <p class="dropdown-item" @click="changeChart('주문수')">
+                  주문수
+                </p>
               </div>
             </div>
           </div>
@@ -336,12 +334,19 @@ import LineChart from "../components/dashboard/LineChart.vue";
 import PieChart from "../components/dashboard/PieChart.vue";
 
 export default {
+  props: {
+    parent_id: {
+      type: String,
+      required: true,
+    },
+  },
   components: {
     LineChart,
     PieChart,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
+
     const router = useRouter();
 
     const monthlyIncom = ref(0);
@@ -376,6 +381,7 @@ export default {
       try {
         const res = await axios.get("api/incomes/monthly");
         console.log("Dashboard=", res.data);
+        console.log(props.parent_id);
         monthly.value = res.data;
       } catch (err) {
         console.error(err);

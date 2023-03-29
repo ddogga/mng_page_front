@@ -69,6 +69,7 @@ import "@/assets/js/sb-admin-2.min.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "./axios/axiossetting.js";
+import { useStore } from "vuex";
 
 import Sidebar from "./components/Sidebar.vue";
 import Topbar from "./components/Topbar.vue";
@@ -84,10 +85,9 @@ export default {
 
   setup() {
     const id = ref("");
-
     const router = useRouter();
-
     const state = ref("false");
+    const store = useStore();
 
     const getSession = async (received_id) => {
       console.log(received_id);
@@ -113,6 +113,7 @@ export default {
               name: "Login",
             });
           }
+          store.dispatch("set_userName", id.value);
         } catch (err) {
           console.log(err);
         }

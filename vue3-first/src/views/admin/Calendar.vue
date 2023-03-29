@@ -76,7 +76,8 @@ export default {
     FullCalendar,
     NewEventPopup,
   },
-  setup() {
+  setup(props, context) {
+    context.emit("parent_getSession", "");
     const currentEvents = ref([]);
 
     // methods :
@@ -92,6 +93,7 @@ export default {
      */
     const handleDateSelect = (selectInfo) => {
       let calendarApi = selectInfo.view.calendar;
+      console.log(selectInfo);
       selectDateInfo.value = selectInfo;
 
       openPopup();
@@ -155,12 +157,14 @@ export default {
         right: "dayGridMonth,timeGridWeek,timeGridDay",
       },
       initialView: "dayGridMonth",
+      locale: "ko",
+
       editable: true,
       selectable: true,
       selectMirror: true,
       dayMaxEvents: true,
       weekends: true,
-      eventLimit: true, // '달력상에 셀 크기보다 많은 이벤트가 등록되어 있는 경우 more로 표기함'
+
       displayEventTime: true,
       displayEventEnd: true,
       eventColor: "#378006",

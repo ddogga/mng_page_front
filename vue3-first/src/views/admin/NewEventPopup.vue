@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-content mt-5">
+  <form @submit.prevent="addEvent" class="modal-content mt-5">
     <div class="modal-header">
       <div class="modal-title">새 일정 등록</div>
       <div>
@@ -14,7 +14,12 @@
       <div class="row">
         <div class="col-xl-10">
           <label class="col-xl-4" for="edit-allDay">하루종일</label>
-          <input class="checkBox" id="edit-allDay" type="checkbox" />
+          <input
+            class="checkBox"
+            id="edit-allDay"
+            type="checkbox"
+            v-model="eventInfo.allDay"
+          />
         </div>
       </div>
 
@@ -23,8 +28,8 @@
           <label class="col-xl-4" for="edit-title">일정명</label>
           <input
             class="inputModal"
+            v-model="eventInfo.title"
             type="text"
-            name="edit-title"
             id="edit-title"
           />
         </div>
@@ -35,21 +40,30 @@
           <input
             class="inputModal"
             type="text"
-            name="edit-start"
             id="edit-start"
+            v-model="eventInfo.start"
           />
         </div>
       </div>
       <div class="row">
         <div class="col-xl-10">
           <label class="col-xl-4" for="edit-end">끝</label>
-          <input class="inputModal" type="text" name="edit-end" id="edit-end" />
+          <input
+            class="inputModal"
+            type="text"
+            id="edit-end"
+            v-model="eventInfo.end"
+          />
         </div>
       </div>
       <div class="row">
         <div class="col-xl-10">
           <label class="col-xl-4" for="edit-color">색상</label>
-          <select class="inputModal" name="color" id="edit-color">
+          <select
+            class="inputModal"
+            v-model="eventInfo.backgroundColor"
+            id="edit-color"
+          >
             <option value="#D25565" style="color: #d25565">빨간색</option>
             <option value="#9775fa" style="color: #9775fa">보라색</option>
             <option value="#ffa94d" style="color: #ffa94d">주황색</option>
@@ -70,7 +84,7 @@
           <textarea
             rows="4"
             cols="27"
-            name="edit-desc"
+            v-model="eventInfo.description"
             id="edit-desc"
           ></textarea>
         </div>
@@ -80,7 +94,7 @@
       <button type="button" class="btn btn-default" data-dismiss="modal">
         취소
       </button>
-      <button type="button" class="btn btn-primary" id="save-event">
+      <button type="submit" class="btn btn-primary" id="save-event">
         저장
       </button>
     </div>
@@ -95,11 +109,14 @@
         저장
       </button>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
 import { ref, watch } from "vue";
+import { useStore } from "vuex";
+import axios from "../../axios/axiossetting.js";
+import { useRouter } from "vue-router";
 export default {
   props: {
     selectDateInfo: {
@@ -108,23 +125,58 @@ export default {
   },
   emits: ["close-popup"],
   setup(props, context) {
+    const store = useStore();
+    const router = useRouter();
     const add = ref(true);
     const modify = ref(false);
     const closePopup = () => {
       context.emit("close-popup");
     };
 
+    const eventInfo = ref({
+      allDay: true,
+      title: "",
+      start: "",
+      end: "",
+      backgroundColor: "",
+      description: "",
+      userName: "",
+    });
+
     watch(
       () => props.selectDateInfo,
       (next, prev) => {
-        console.log("tt");
+        console.log(props.selectDateInfo);
+
+        let today = new Date();
+        let hours = ("0" + today.getHours()).slice(-2);
+        let minutes = ("0" + today.getMinutes()).slice(-2);
+
+        eventInfo.value.allDay = props.selectDateInfo.allDay;
+        eventInfo.value.start =
+          props.selectDateInfo.startStr + "T" + hours + ":" + minutes;
+        eventInfo.value.end =
+          props.selectDateInfo.endStr + "T" + hours + ":" + minutes;
       }
     );
+
+    const addEvent = async () => {
+      try {
+        eventInfo.value.userName = store.state.userName;
+        const res = await axios.post("api/event/new", eventInfo.value);
+        console.log(res.data);
+        router.go(0);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
     return {
       closePopup,
       add,
       modify,
+      eventInfo,
+      addEvent,
     };
   },
 };
