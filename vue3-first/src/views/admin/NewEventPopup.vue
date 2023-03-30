@@ -116,7 +116,7 @@
 import { ref, watch } from "vue";
 import { useStore } from "vuex";
 import axios from "../../axios/axiossetting.js";
-import { useRouter } from "vue-router";
+
 export default {
   props: {
     selectDateInfo: {
@@ -126,7 +126,6 @@ export default {
   emits: ["close-popup"],
   setup(props, context) {
     const store = useStore();
-    const router = useRouter();
     const add = ref(true);
     const modify = ref(false);
     const closePopup = () => {
@@ -165,7 +164,7 @@ export default {
         eventInfo.value.userName = store.state.userName;
         const res = await axios.post("api/event/new", eventInfo.value);
         console.log(res.data);
-        router.go(0);
+        context.emit("reload");
       } catch (err) {
         console.log(err);
       }

@@ -88,7 +88,8 @@
 import axios from "@/axios/axiossetting";
 import { ref, watch } from "vue";
 export default {
-  setup() {
+  setup(props, context) {
+    context.emit("parent_getSession", "");
     const newItem = ref({
       name: "",
       price: "",

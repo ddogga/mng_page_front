@@ -54,6 +54,7 @@
           :selectDateInfo="selectDateInfo"
           class="pop-up"
           @close-popup="openPopup"
+          @reload="reload"
         ></NewEventPopup>
       </div>
     </div>
@@ -61,12 +62,16 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { defineComponent } from "vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "./js/event-utils";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { useStore } from "vuex";
+import moment from "moment";
 
 import FullCalendar from "@fullcalendar/vue3";
 import NewEventPopup from "./NewEventPopup.vue";
@@ -78,7 +83,12 @@ export default {
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
+    const router = useRouter();
+    const store = useStore();
+
     const currentEvents = ref([]);
+    let currentDate = "";
+    const calendarRef = ref(null);
 
     // methods :
     const handleWeekendsToggle = () => {
@@ -179,14 +189,14 @@ export default {
         eventChange:
         eventRemove:
         */
-      events: [
-        {
-          title: "event 1",
-          start: "2023-03-09T12:30:00",
-          end: "2023-03-13T11:30:00",
-          allDay: false,
-        },
-      ],
+      /**
+       * 일정 받아오기
+       */
+      events: function (start, end, timezone, callback) {
+        console.log(start.startStr);
+        const evnetList = getEvents(start.startStr, start.endStr);
+        callback(evnetList);
+      },
     });
 
     // 일정 등록 Popup
@@ -196,6 +206,33 @@ export default {
       popupView.value = popupView.value ? false : true;
     };
 
+    const reload = () => {
+      console.log("reload");
+      router.go(0);
+    };
+
+    const getEvents = async (startStr, endStr) => {
+      const startDate = moment(startStr).format("YYYY-MM-DD");
+      const endDate = moment(endStr).format("YYYY-MM-DD");
+      console.log(startDate);
+      console.log(endDate);
+      try {
+        const res = await axios.get("api/events", {
+          params: {
+            startDate: startDate,
+            endDate: endDate,
+            userName: store.state.userName,
+          },
+        });
+
+        console.log(res.data);
+
+        return res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     return {
       calendarOptions,
       currentEvents,
@@ -203,6 +240,7 @@ export default {
       popupView,
       openPopup,
       selectDateInfo,
+      reload,
     };
   },
 };
