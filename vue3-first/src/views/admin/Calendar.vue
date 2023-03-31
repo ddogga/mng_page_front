@@ -193,9 +193,9 @@ export default {
        * 일정 받아오기
        */
       events: function (start, end, timezone, callback) {
-        console.log(start.startStr);
-        const evnetList = getEvents(start.startStr, start.endStr);
-        callback(evnetList);
+        console.log(callback);
+        return getEvents(start.startStr, start.endStr);
+        // callback(evnetList);
       },
     });
 
@@ -214,8 +214,6 @@ export default {
     const getEvents = async (startStr, endStr) => {
       const startDate = moment(startStr).format("YYYY-MM-DD");
       const endDate = moment(endStr).format("YYYY-MM-DD");
-      console.log(startDate);
-      console.log(endDate);
       try {
         const res = await axios.get("api/events", {
           params: {
@@ -227,6 +225,12 @@ export default {
 
         console.log(res.data);
 
+        // const eventList = res.data.map(function (array) {
+        //   if (array.allDay && array.start !== array.end) {
+        //     array.end = moment(array.end).add(1, "days"); // 이틀 이상 AllDay 일정인 경우 달력에 표기시 하루를 더해야 정상출력
+        //   }
+        //   return array;
+        // });
         return res.data;
       } catch (err) {
         console.log(err);

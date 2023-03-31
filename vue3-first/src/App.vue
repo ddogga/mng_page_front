@@ -86,11 +86,11 @@ export default {
   setup() {
     const id = ref("");
     const router = useRouter();
-    const state = ref("false");
+    const state = ref(false);
     const store = useStore();
 
     const getSession = async (received_id) => {
-      console.log(received_id);
+      console.log("received_id : " + received_id);
       if (received_id == "login") {
         state.value = true;
         try {
