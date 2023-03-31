@@ -211,15 +211,18 @@ export default {
       router.go(0);
     };
 
+    const userName = store.state.userName;
+
     const getEvents = async (startStr, endStr) => {
       const startDate = moment(startStr).format("YYYY-MM-DD");
       const endDate = moment(endStr).format("YYYY-MM-DD");
+      console.log("userName = " + userName);
       try {
         const res = await axios.get("api/events", {
           params: {
             startDate: startDate,
             endDate: endDate,
-            userName: store.state.userName,
+            userName: userName,
           },
         });
 

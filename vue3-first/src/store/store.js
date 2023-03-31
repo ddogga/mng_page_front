@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
   state: {
@@ -19,4 +20,9 @@ export default createStore({
       context.commit("set_userName", userName);
     },
   },
+  plugins: [
+    createPersistedState({
+      paths: ["userName"],
+    }),
+  ],
 });
