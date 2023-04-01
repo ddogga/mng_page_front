@@ -54,7 +54,6 @@
             <router-link to="/shop/user_list" class="collapse-item">
               회원 조회/수정
             </router-link>
-            <a class="collapse-item" href="cards.html">Cards</a>
           </div>
         </div>
       </li>

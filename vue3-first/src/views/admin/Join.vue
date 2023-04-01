@@ -114,6 +114,7 @@ export default {
     const join = ref({
       id: "",
       password: "",
+      role: "ADMIN",
     });
 
     const checkPass = ref("");
@@ -190,7 +191,7 @@ export default {
         alert("비밀번호를 확인하세요");
       } else {
         try {
-          const res = await axios.post("api/user/admin/new", join.value);
+          const res = await axios.post("api/user/new", join.value);
           if (res.data) {
             console.log(res.data);
             alert(res.data.name + "님 회원 가입을 축하합니다.");

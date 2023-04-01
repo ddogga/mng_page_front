@@ -9,29 +9,21 @@
     <div class="demo-app">
       <div class="demo-app-sidebar">
         <div class="demo-app-sidebar-section">
-          <h2>Instructions</h2>
-          <ul>
-            <li>Select dates and you will be prompted to create a new event</li>
-            <li>Drag, drop, and resize events</li>
-            <li>Click an event to delete it</li>
-          </ul>
-        </div>
-        <div class="demo-app-sidebar-section">
           <label>
             <input
               type="checkbox"
               :checked="calendarOptions.weekends"
               @change="handleWeekendsToggle"
             />
-            toggle weekends
+            주말
           </label>
         </div>
         <div class="demo-app-sidebar-section">
-          <h2>All Events ({{ currentEvents.length }})</h2>
+          <h2>이번달 일정({{ currentEvents.length }})</h2>
           <ul>
             <li v-for="event in currentEvents" :key="event.id">
-              <b>{{ event.startStr }}</b>
-              <b>{{ event.endStr }}</b>
+              <b>{{ event.startStr }} </b>
+              <b> ~ {{ event.endStr }}</b>
               <i>{{ event.title }}</i>
             </li>
           </ul>
@@ -39,10 +31,6 @@
       </div>
       <div class="demo-app-main">
         <FullCalendar class="demo-app-calendar" :options="calendarOptions">
-          <!-- <template v-slot:eventContent="arg">
-          <b>{{ arg.timeText }}</b>
-          <i>{{ arg.event.title }}</i>
-        </template> -->
         </FullCalendar>
       </div>
     </div>
@@ -121,16 +109,27 @@ export default {
     };
 
     /**
-     * 달력 셀에 바인딩된 데이터 클릭시 발생 이벤트
+     * 달력 셀에 바인딩된 데이터 클릭시 발생 이벤트 :
+     * 이벤트 삭제
      * @param {} clickInfo
      */
     const handleEventClick = (clickInfo) => {
-      if (
-        confirm(
-          `Are you sure you want to delete the event '${clickInfo.event.title}'`
-        )
-      ) {
+      if (confirm(`'${clickInfo.event.title}' 일정을 삭제하시겠습니까?`)) {
         clickInfo.event.remove();
+        console.log("delete event id : " + clickInfo.event.id);
+        deleteEvent(clickInfo.event.id);
+      }
+    };
+
+    const deleteEvent = async (event_id) => {
+      try {
+        const res = await axios.delete("api/event", {
+          params: { eventId: event_id },
+        });
+        alert(res.data);
+        router.go(0);
+      } catch (err) {
+        console.log(err);
       }
     };
 
@@ -193,7 +192,6 @@ export default {
        * 일정 받아오기
        */
       events: function (start, end, timezone, callback) {
-        console.log(callback);
         return getEvents(start.startStr, start.endStr);
         // callback(evnetList);
       },

@@ -88,7 +88,7 @@ export default {
           console.log(res.data);
           if (res.data.result == "SUCCESS") {
             alert("삭제 성공");
-            getList();
+            getUsers();
           } else if (res.data.result == "FAIL") {
             alert(res.data.reason);
           }

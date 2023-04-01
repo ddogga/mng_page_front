@@ -241,9 +241,9 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-            >Douglas McGee</span
-          >
+          <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{
+            login_user
+          }}</span>
           <img
             class="img-profile rounded-circle"
             src="@/assets/img/undraw_profile.svg"
@@ -282,3 +282,19 @@
   </nav>
   <!-- End of Topbar -->
 </template>
+
+<script>
+import { ref } from "vue";
+import { useStore } from "vuex";
+export default {
+  setup() {
+    const store = useStore();
+
+    const login_user = ref(store.state.userName);
+
+    return {
+      login_user,
+    };
+  },
+};
+</script>
