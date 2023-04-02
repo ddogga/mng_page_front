@@ -22,6 +22,7 @@
           <div class="card-body">
             <form @submit.prevent="insertItemProcess">
               <div class="form-floating mb-3">
+                <label for="inputID"><b>상품명</b></label>
                 <input
                   class="form-control"
                   id="inputID"
@@ -31,10 +32,10 @@
                   v-model="newItem.name"
                   required
                 />
-                <label for="inputID">상품명</label>
               </div>
 
               <div class="form-floating mb-3">
+                <label for="inputPassword"><b>상품 가격</b></label>
                 <input
                   class="form-control"
                   id="inputPassword"
@@ -43,10 +44,10 @@
                   v-model="newItem.price"
                   required
                 />
-                <label for="inputPassword">상품 가격</label>
               </div>
 
               <div class="form-floating mb-3">
+                <label for="inputPasswordConfirm"><b>상품 원가</b></label>
                 <input
                   class="form-control"
                   id="inputPasswordConfirm"
@@ -55,9 +56,9 @@
                   v-model="newItem.itemCost"
                   required
                 />
-                <label for="inputPasswordConfirm">상품 원가</label>
               </div>
               <div class="form-floating mb-3">
+                <label for="inputPasswordConfirm"><b>재고 수량</b></label>
                 <input
                   class="form-control"
                   id="inputPasswordConfirm"
@@ -66,7 +67,6 @@
                   v-model="newItem.stockQuantity"
                   required
                 />
-                <label for="inputPasswordConfirm">재고 수량</label>
               </div>
 
               <div class="mt-4 mb-0">
@@ -119,3 +119,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+label {
+  float: left;
+  padding-left: 5%;
+}
+
+input {
+  margin-bottom: 3%;
+}
+
+form {
+  padding: 5%;
+  padding-top: 2%;
+}
+</style>

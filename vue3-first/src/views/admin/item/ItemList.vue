@@ -7,9 +7,9 @@
       </div>
 
       <!-- Content Row -->
-      <div class="row">
+      <div class="row" :class="{ modify: isClicked }">
         <!-- Area Table -->
-        <div class="col-xl-10 col-lg-8">
+        <div class="left">
           <div class="card shadow mb-4">
             <div
               class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
@@ -40,7 +40,7 @@
                     <td>
                       <button
                         class="btn btn-info btn-sm"
-                        @click="deleteItem(item.id)"
+                        @click="openModifyView(item.id)"
                       >
                         수정
                       </button>
@@ -54,6 +54,11 @@
             </div>
           </div>
         </div>
+        <!--동적 컴포넌트 영역-->
+        <div class="right">
+          <component :is="modifyView" :id="selectedItemId" @onClose="onClose">
+          </component>
+        </div>
       </div>
     </div>
   </div>
@@ -64,12 +69,21 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "@/axios/axiossetting.js";
 
+import ModifyView from "./ModifyView.vue";
+
 export default {
+  components: {
+    ModifyView,
+  },
   setup(props, context) {
     context.emit("parent_getSession", "");
 
     const items = ref([]);
     const count = ref(0);
+
+    const isClicked = ref(false);
+    const modifyView = ref(null);
+    const selectedItemId = ref(0);
 
     const getItems = async () => {
       try {
@@ -84,31 +98,76 @@ export default {
 
     getItems();
 
-    const deleteItem = async (id) => {
-      const answer = confirm("정말 삭제하시겠습니까?");
-      if (answer) {
-        try {
-          const res = await axios.delete("api/item", {
-            params: { id: id },
-          });
-          console.log(res.data);
-          if (res.data.result == "SUCCESS") {
-            alert("삭제 성공");
-            getItems();
-          } else if (res.data.result == "FAIL") {
-            alert(res.data.reason);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
+    // const deleteItem = async (id) => {
+    //   const answer = confirm("정말 삭제하시겠습니까?");
+    //   if (answer) {
+    //     try {
+    //       const res = await axios.delete("api/item", {
+    //         params: { id: id },
+    //       });
+    //       console.log(res.data);
+    //       if (res.data.result == "SUCCESS") {
+    //         alert("삭제 성공");
+    //         getItems();
+    //       } else if (res.data.result == "FAIL") {
+    //         alert(res.data.reason);
+    //       }
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //   }
+    // };
+
+    const openModifyView = (id) => {
+      isClicked.value = true;
+      modifyView.value = ModifyView;
+      selectedItemId.value = id;
+    };
+
+    const onClose = () => {
+      modifyView.value = null;
+      isClicked.value = false;
     };
 
     return {
       items,
       count,
-      deleteItem,
+      isClicked,
+      modifyView,
+      selectedItemId,
+      onClose,
+      openModifyView,
     };
   },
 };
 </script>
+
+<style scoped>
+.row .left {
+  width: 70%;
+  padding: 0 15px;
+  transition: width 0.25s;
+  -webkit-transition: width 0.25s;
+}
+
+.row.modify .left {
+  width: 50%;
+  padding: 0 15px;
+  transition: width 0.25s;
+  -webkit-transition: width 0.25s;
+}
+
+.row .right {
+  width: 30%;
+  padding: 0 15px;
+  transition: width 0.25s, opacity 0.2s;
+  -webkit-transition: width 0.25s, opacity 0.2s;
+}
+
+.row.modify .right {
+  width: 50%;
+  padding: 0 15px;
+  transition: width 0.25s, opacity 0.2s;
+  -webkit-transition: width 0.25s, opacity 0.2s;
+}
+</style>
