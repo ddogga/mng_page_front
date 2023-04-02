@@ -31,7 +31,11 @@
                   <th>상품 정보 수정</th>
                 </thead>
                 <tbody>
-                  <tr v-for="(item, index) in items" :key="index">
+                  <tr
+                    v-for="(item, index) in items"
+                    :key="index"
+                    :class="[item.itemStatus == 'EOS' ? isOnSale : '']"
+                  >
                     <td>{{ index + 1 }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.price }}</td>
@@ -56,7 +60,12 @@
         </div>
         <!--동적 컴포넌트 영역-->
         <div class="right">
-          <component :is="modifyView" :id="selectedItemId" @onClose="onClose">
+          <component
+            :is="modifyView"
+            :id="selectedItemId"
+            @onClose="onClose"
+            @onModify="onModify"
+          >
           </component>
         </div>
       </div>
@@ -77,6 +86,7 @@ export default {
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
+    const router = useRouter();
 
     const items = ref([]);
     const count = ref(0);
@@ -84,6 +94,7 @@ export default {
     const isClicked = ref(false);
     const modifyView = ref(null);
     const selectedItemId = ref(0);
+    const isOnSale = ref("onSale");
 
     const getItems = async () => {
       try {
@@ -129,6 +140,10 @@ export default {
       isClicked.value = false;
     };
 
+    const onModify = () => {
+      getItems();
+    };
+
     return {
       items,
       count,
@@ -137,6 +152,8 @@ export default {
       selectedItemId,
       onClose,
       openModifyView,
+      onModify,
+      isOnSale,
     };
   },
 };
@@ -169,5 +186,9 @@ export default {
   padding: 0 15px;
   transition: width 0.25s, opacity 0.2s;
   -webkit-transition: width 0.25s, opacity 0.2s;
+}
+
+.onSale {
+  color: red;
 }
 </style>

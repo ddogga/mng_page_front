@@ -193,18 +193,22 @@ export default {
 
     const init = () => {
       console.log("init");
-      currentMonth.value =
-        props.props_data[props.props_data.length - 1].orderMonth;
-      for (let i = 0; i < props.props_data.length; i++) {
-        let index = 0;
-        if (props.props_data[i].orderMonth <= currentMonth.value) {
-          index = 12 - currentMonth.value + props.props_data[i].orderMonth - 1;
-        } else {
-          index = props.props_data[i].orderMonth - currentMonth.value - 1;
+      if (props.props_data) {
+        currentMonth.value =
+          props.props_data[props.props_data.length - 1].orderMonth;
+
+        for (let i = 0; i < props.props_data.length; i++) {
+          let index = 0;
+          if (props.props_data[i].orderMonth <= currentMonth.value) {
+            index =
+              12 - currentMonth.value + props.props_data[i].orderMonth - 1;
+          } else {
+            index = props.props_data[i].orderMonth - currentMonth.value - 1;
+          }
+          monthlyIncoms[index] = props.props_data[i].totalIncome;
+          monthlyCount[index] = props.props_data[i].totalCount;
+          monthlyProfits[index] = props.props_data[i].totalProfit;
         }
-        monthlyIncoms[index] = props.props_data[i].totalIncome;
-        monthlyCount[index] = props.props_data[i].totalCount;
-        monthlyProfits[index] = props.props_data[i].totalProfit;
       }
     };
 

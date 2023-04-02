@@ -14,7 +14,7 @@
     </div>
 
     <div class="card-body">
-      <form>
+      <form @submit.prevent="modifyItem">
         <div class="form-floating mb-3">
           <label class="label" for="inputID"><b>상품명</b></label>
           <input
@@ -107,7 +107,7 @@ export default {
   },
   setup(props, context) {
     const saleState = ref(false);
-    const selectedState = ref("판매중");
+    const selectedState = ref("판매 중지");
     const itemInfo = ref({
       name: "",
       price: "",
@@ -136,13 +136,25 @@ export default {
       context.emit("onClose");
     };
 
+    const modifyItem = async () => {
+      try {
+        const res = await axios.put("api/item", itemInfo.value);
+        alert(res.data);
+        context.emit("onModify");
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     watch(
       () => saleState.value,
       (next, prev) => {
         if (saleState.value) {
           selectedState.value = "판매중";
+          itemInfo.value.itemStatus = "OS";
         } else {
           selectedState.value = "판매 중지";
+          itemInfo.value.itemStatus = "EOS";
         }
       }
     );
@@ -152,6 +164,7 @@ export default {
       saleState,
       selectedState,
       closeModifyView,
+      modifyItem,
     };
   },
 };
