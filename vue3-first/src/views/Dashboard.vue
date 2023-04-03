@@ -130,7 +130,7 @@
           <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
           >
-            <h6 class="m-0 font-weight-bold text-white">연간 매출 현황</h6>
+            <h6 class="m-0 font-weight-bold text-white">오늘의 할인 정보</h6>
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -168,7 +168,8 @@
           <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
           >
-            <h6 class="m-0 font-weight-bold text-white">인기 상품 순위</h6>
+            <h6 class="m-0 font-weight-bold text-white">이번주 할일</h6>
+            <!-- 드롭다운 -->
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -196,7 +197,9 @@
 
           <!-- Card Body -->
           <div class="card-body">
-            <div class="chart-area"></div>
+            <div class="chart-area">
+              <TodayEvent />
+            </div>
           </div>
         </div>
       </div>
@@ -207,7 +210,7 @@
           <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
           >
-            <h6 class="m-0 font-weight-bold text-white">인기 상품 순위</h6>
+            <h6 class="m-0 font-weight-bold text-white">오늘의 날씨 정보</h6>
             <div class="dropdown no-arrow">
               <a
                 class="dropdown-toggle"
@@ -329,7 +332,7 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "../axios/axiossetting.js";
 
-// import LineChart from "../components/dashboard/LineChart.vue";
+import TodayEvent from "../components/dashboard/TodayEvent.vue";
 import LineChart from "../components/dashboard/LineChart.vue";
 import PieChart from "../components/dashboard/PieChart.vue";
 
@@ -343,6 +346,7 @@ export default {
   components: {
     LineChart,
     PieChart,
+    TodayEvent,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");

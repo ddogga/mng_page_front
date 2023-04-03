@@ -97,6 +97,14 @@
         >
       </li>
 
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <router-link class="nav-link" to="/shop/calendar">
+          <i class="fas fa-fw fa-donate"></i>
+          <span>주문 관리</span></router-link
+        >
+      </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider" />
 
