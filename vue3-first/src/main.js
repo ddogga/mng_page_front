@@ -1,8 +1,10 @@
 import { createApp } from "vue";
+import { BootstrapIconsPlugin } from "bootstrap-icons-vue";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/router.js";
 import store from "./store/store.js";
+import { VueGeolocation } from "vue-geolocation-api";
 
 // ==========================================
 // Js
@@ -32,6 +34,6 @@ import "@/assets/css/sb-admin-2.min.css";
 import "@/assets/vendor/fontawesome-free/css/all.min.css";
 
 const app = createApp(App);
-app.use(router).use(store);
+app.use(router).use(store).use(BootstrapIconsPlugin).use(VueGeolocation);
 
 app.mount("#app");

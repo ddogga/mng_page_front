@@ -48,7 +48,6 @@ export default {
         });
 
         currentDay.value = res.data.map(function (element) {
-          console.log(element.start.substr(0, 10));
           return week[new Date(element.start.substr(0, 10)).getDay()];
         });
 

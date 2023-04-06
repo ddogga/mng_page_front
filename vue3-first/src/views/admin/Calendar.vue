@@ -7,7 +7,7 @@
 
     <!-- Calendar-->
     <div class="demo-app">
-      <div class="demo-app-sidebar">
+      <!-- <div class="demo-app-sidebar">
         <div class="demo-app-sidebar-section">
           <label>
             <input
@@ -28,7 +28,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div> -->
       <div class="demo-app-main">
         <FullCalendar class="demo-app-calendar" :options="calendarOptions">
         </FullCalendar>
