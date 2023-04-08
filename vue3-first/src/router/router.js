@@ -7,6 +7,8 @@ import UserList from "../views/admin/UserList.vue";
 import NewItem from "../views/admin/item/NewItem.vue";
 import ItemList from "../views/admin/item/ItemList.vue";
 import Calendar from "../views/admin/Calendar.vue";
+import OrderList from "../views/admin/order/OrderList.vue";
+import CancelOrderList from "../views/admin/order/CancelOrderList.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -53,6 +55,16 @@ const router = createRouter({
       path: "/shop/calendar",
       name: "Calendar",
       component: Calendar,
+    },
+    {
+      path: "/shop/order_list",
+      name: "OrderList",
+      component: OrderList,
+    },
+    {
+      path: "/shop/cancel_order_list",
+      name: "CancelOrderList",
+      component: CancelOrderList,
     },
   ],
 });

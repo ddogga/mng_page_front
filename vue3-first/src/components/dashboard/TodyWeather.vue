@@ -1,7 +1,7 @@
 <template>
   <div class="text-white">
     <div class="row">
-      <div class="col-sm-3">{{ dateBuilder() }}</div>
+      <div class="col-sm-5">{{ dateBuilder() }}</div>
     </div>
     <div class="row today-weather">
       <div class="col-sm-4">
@@ -18,7 +18,7 @@
         </div>
         <div class="row">
           <div class="col-sm-5" style="float: left">
-            {{ weather.weather[0].main }}
+            <!-- {{ weather.weather[0].main }} -->
           </div>
           <!-- <div class="col-sm-7">
             {{ weather.main.temp_max }} / {{ weather.main.temp_min }}
@@ -27,13 +27,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col">요일</div>
-      <div class="col">요일</div>
-      <div class="col">요일</div>
-      <div class="col">요일</div>
-      <div class="col">요일</div>
-      <div class="col">요일</div>
-      <div class="col">요일</div>
+      <div class="col" v-for="(day, index) in days" :key="index">
+        <hr class="hr sidebar-divider" />
+        {{ day }}
+        <hr class="hr sidebar-divider" />
+      </div>
     </div>
   </div>
 </template>
@@ -83,7 +81,6 @@ export default {
       isPositionReady.value = true;
 
       let fetchUrl = `${url_base}weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=${api_key}`;
-      console.log(fetchUrl);
       fetchWeather(fetchUrl);
     };
 
@@ -98,7 +95,6 @@ export default {
     const fetchWeather = async (fetchUrl) => {
       await fetch(fetchUrl)
         .then((res) => {
-          console.log(res);
           return res.json();
         }) //fetch 정보(?) json 형식으로 변경
         .then((results) => {
@@ -122,7 +118,7 @@ export default {
       return `${day} ${date} ${month} ${year}`;
     };
 
-    onBeforeMount(() => {
+    onBeforeMount(async () => {
       if (!navigator.geolocation) {
         setAlert("위치 정보를 찾을 수 없습니다.1");
       } else {
@@ -138,6 +134,7 @@ export default {
     return {
       dateBuilder,
       weather,
+      days,
     };
   },
 };
@@ -147,5 +144,11 @@ export default {
 .today-weather {
   margin-top: 2%;
   height: 100px;
+}
+</style>
+
+<style scoped>
+.sidebar-divider {
+  margin: 0.1rem;
 }
 </style>

@@ -89,19 +89,42 @@
         </div>
       </li>
 
-      <!-- Nav Item - Tables -->
+      <!-- Nav Item - Collapse Menu -->
       <li class="nav-item">
-        <router-link class="nav-link" to="/shop/calendar">
-          <i class="fas fa-fw fa-table"></i>
-          <span>일정 관리</span></router-link
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapse"
+          aria-expanded="true"
+          aria-controls="collapse"
         >
+          <i class="fas fa-fw fa-wrench"></i>
+          <span>주문 관리</span>
+        </a>
+        <div
+          id="collapse"
+          class="collapse"
+          aria-labelledby="heading"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">주문 관리</h6>
+            <router-link to="/shop/order_list" class="collapse-item">
+              주문 상태 관리
+            </router-link>
+            <router-link to="/shop/cancel_order_list" class="collapse-item">
+              취소 주문 내역
+            </router-link>
+          </div>
+        </div>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <router-link class="nav-link" to="/shop/calendar">
-          <i class="fas fa-fw fa-donate"></i>
-          <span>주문 관리</span></router-link
+          <i class="fas fa-fw fa-table"></i>
+          <span>일정 관리</span></router-link
         >
       </li>
 
