@@ -12,17 +12,17 @@
           <div class="col-sm-5" style="float: left">
             {{ weather.name }}
           </div>
-          <!-- <div class="col-sm-7">
-            {{ weather.main.temp }}
-          </div> -->
+          <div class="col-sm-7">
+            {{ weather?.main?.temp }}
+          </div>
         </div>
         <div class="row">
           <div class="col-sm-5" style="float: left">
-            <!-- {{ weather.weather[0].main }} -->
+            {{ weather?.weather?.[0]}}
           </div>
-          <!-- <div class="col-sm-7">
-            {{ weather.main.temp_max }} / {{ weather.main.temp_min }}
-          </div> -->
+          <div class="col-sm-7">
+            {{ weather?.main?.temp_max }} / {{ weather?.main?.temp_min }}
+          </div>
         </div>
       </div>
     </div>

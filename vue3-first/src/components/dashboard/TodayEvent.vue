@@ -86,6 +86,7 @@ export default {
 }
 
 .event-date {
+  font-size: 0.8rem;
   background: rgb(47, 47, 47);
   color: white;
 }
