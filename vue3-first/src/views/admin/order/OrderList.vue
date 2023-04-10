@@ -6,9 +6,9 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row">
+    <div class="row" :class="{ modify: isClicked }">
       <!-- Area Table -->
-      <div class="col-xl-10 col-lg-8">
+      <div class="left">
         <div class="card shadow mb-4">
           <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
@@ -48,7 +48,7 @@
                   <td>
                     <button
                       class="btn btn-info btn-sm"
-                      @click="openModifyView(order.id)"
+                      @click="openModifyView(index)"
                     >
                       수정
                     </button>
@@ -61,6 +61,17 @@
             진행중인 주문이 없습니다.
           </div>
         </div>
+      </div>
+
+      <!-- 동적 컴포넌트 영역 -->
+      <div class="right">
+        <component
+          :is="modifyView"
+          :orderInfo="orderInfo"
+          @onClose="onClose"
+          @onModify="onModify"
+        >
+        </component>
       </div>
     </div>
 
@@ -80,13 +91,15 @@
 
 <script>
 import { ref } from "vue";
-import axios from "../../../axios/axiossetting.js";
+import axios from "@/axios/axiossetting.js";
 
-import ItemsInfo from "@/views/admin/item/ItemsInfoPopup.vue";
+import ItemsInfo from "@/views/admin/order/ItemsInfoPopup.vue";
+import ModifyOrderView from "@/views/admin/order/ModifyOrderView.vue";
 
 export default {
   components: {
     ItemsInfo,
+    ModifyOrderView,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
@@ -95,6 +108,10 @@ export default {
     const selectedOrderid = ref("");
 
     const popupView = ref(false);
+
+    const modifyView = ref(null);
+    const orderInfo = ref({});
+    const isClicked = ref(false);
 
     const getOrders = async () => {
       try {
@@ -116,14 +133,37 @@ export default {
       popupView.value = popupView.value ? false : true;
     };
 
+    // 주문 수정 폼
+    const openModifyView = (index) => {
+      isClicked.value = true;
+      modifyView.value = ModifyOrderView;
+      console.log("선택한 주문 인덱스값 " + orders.value[index].id);
+      orderInfo.value = orders.value[index];
+    };
+
+    const onClose = () => {
+      modifyView.value = null;
+      isClicked.value = false;
+    };
+
+    const onModify = () => {
+      getOrders();
+    };
+
     getOrders();
     return {
       count,
       orders,
       popupView,
       selectedOrderid,
+      modifyView,
+      orderInfo,
+      isClicked,
       openPopup,
       openOrderItemView,
+      openModifyView,
+      onModify,
+      onClose,
     };
   },
 };
@@ -173,5 +213,34 @@ export default {
   opacity: 1;
   display: block;
   visibility: visible;
+}
+
+/** 수정 영역 오픈 */
+.row .left {
+  width: 80%;
+  padding: 0 15px;
+  transition: width 0.25s;
+  -webkit-transition: width 0.25s;
+}
+
+.row.modify .left {
+  width: 60%;
+  padding: 0 15px;
+  transition: width 0.25s;
+  -webkit-transition: width 0.25s;
+}
+
+.row .right {
+  width: 20%;
+  padding: 0 15px;
+  transition: width 0.25s, opacity 0.2s;
+  -webkit-transition: width 0.25s, opacity 0.2s;
+}
+
+.row.modify .right {
+  width: 40%;
+  padding: 0 15px;
+  transition: width 0.25s, opacity 0.2s;
+  -webkit-transition: width 0.25s, opacity 0.2s;
 }
 </style>
