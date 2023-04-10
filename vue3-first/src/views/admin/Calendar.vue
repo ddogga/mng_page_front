@@ -78,6 +78,8 @@ export default {
     let currentDate = "";
     const calendarRef = ref(null);
 
+    const popupView = ref(false);
+
     // methods :
     const handleWeekendsToggle = () => {
       calendarOptions.value.weekends = !calendarOptions.value.weekends; // update a property
@@ -198,7 +200,6 @@ export default {
     });
 
     // 일정 등록 Popup
-    const popupView = ref(false);
 
     const openPopup = () => {
       popupView.value = popupView.value ? false : true;
