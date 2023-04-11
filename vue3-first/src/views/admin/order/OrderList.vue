@@ -77,6 +77,7 @@
           :orderId="orderId"
           @onClose="onClose"
           @onModify="onModify"
+          @onCancel="onCancel"
         >
         </component>
       </div>
@@ -160,10 +161,16 @@ export default {
       getOrders();
     };
 
-    const openCancelView = (orderId) => {
+    const openCancelView = (id) => {
       isClicked.value = true;
       currentView.value = CancelOrderView;
-      orderId.value = orderId;
+      orderId.value = id;
+    };
+
+    const onCancel = () => {
+      getOrders();
+      currentView.value = null;
+      isClicked.value = false;
     };
 
     getOrders();
@@ -175,12 +182,14 @@ export default {
       currentView,
       orderInfo,
       isClicked,
+      orderId,
       openPopup,
       openOrderItemView,
       openModifyView,
       onModify,
       onClose,
       openCancelView,
+      onCancel,
     };
   },
 };

@@ -35,7 +35,15 @@
 </template>
 
 <script>
+import axios from "@/axios/axiossetting";
+import { ref, watch } from "vue";
 export default {
-  setup() {},
+  setup() {
+    const count = ref(0);
+
+    return {
+      count,
+    };
+  },
 };
 </script>
