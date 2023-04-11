@@ -47,10 +47,16 @@
                   </td>
                   <td>
                     <button
-                      class="btn btn-info btn-sm"
+                      class="btn btn-info btn-sm mr-2"
                       @click="openModifyView(index)"
                     >
                       수정
+                    </button>
+                    <button
+                      class="btn btn-danger btn-sm"
+                      @click="openCancelView(order.id)"
+                    >
+                      주문취소
                     </button>
                   </td>
                 </tr>
@@ -66,8 +72,9 @@
       <!-- 동적 컴포넌트 영역 -->
       <div class="right">
         <component
-          :is="modifyView"
+          :is="currentView"
           :orderInfo="orderInfo"
+          :orderId="orderId"
           @onClose="onClose"
           @onModify="onModify"
         >
@@ -95,11 +102,13 @@ import axios from "@/axios/axiossetting.js";
 
 import ItemsInfo from "@/views/admin/order/ItemsInfoPopup.vue";
 import ModifyOrderView from "@/views/admin/order/ModifyOrderView.vue";
+import CancelOrderView from "@/views/admin/order/CancelOrderView.vue";
 
 export default {
   components: {
     ItemsInfo,
     ModifyOrderView,
+    CancelOrderView,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
@@ -109,9 +118,10 @@ export default {
 
     const popupView = ref(false);
 
-    const modifyView = ref(null);
+    const currentView = ref(null);
     const orderInfo = ref({});
     const isClicked = ref(false);
+    const orderId = ref("");
 
     const getOrders = async () => {
       try {
@@ -136,18 +146,24 @@ export default {
     // 주문 수정 폼
     const openModifyView = (index) => {
       isClicked.value = true;
-      modifyView.value = ModifyOrderView;
+      currentView.value = ModifyOrderView;
       console.log("선택한 주문 인덱스값 " + orders.value[index].id);
       orderInfo.value = orders.value[index];
     };
 
     const onClose = () => {
-      modifyView.value = null;
+      currentView.value = null;
       isClicked.value = false;
     };
 
     const onModify = () => {
       getOrders();
+    };
+
+    const openCancelView = (orderId) => {
+      isClicked.value = true;
+      currentView.value = CancelOrderView;
+      orderId.value = orderId;
     };
 
     getOrders();
@@ -156,7 +172,7 @@ export default {
       orders,
       popupView,
       selectedOrderid,
-      modifyView,
+      currentView,
       orderInfo,
       isClicked,
       openPopup,
@@ -164,6 +180,7 @@ export default {
       openModifyView,
       onModify,
       onClose,
+      openCancelView,
     };
   },
 };
