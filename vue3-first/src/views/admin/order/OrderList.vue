@@ -127,7 +127,6 @@ export default {
     const getOrders = async () => {
       try {
         const res = await axios.get("api/orders");
-        console.log(res.data);
         orders.value = res.data;
         count.value = orders.value.length;
       } catch (arr) {

@@ -75,8 +75,6 @@ export default {
       }
     };
 
-    getOrderItems();
-
     return {
       orderItems,
       closePopup,

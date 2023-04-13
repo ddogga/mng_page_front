@@ -30,9 +30,19 @@
         </div>
 
         <div class="mt-5 mb-1">
-          <div class="d-grid">
+          <div v-show="!modify" class="d-grid">
             <button type="submit" class="btn btn-danger btn-block form-btn">
               주문 취소
+            </button>
+          </div>
+
+          <div v-show="modify" class="d-grid">
+            <button
+              type="button"
+              @click="updateReason()"
+              class="btn btn-danger btn-block form-btn"
+            >
+              수정
             </button>
           </div>
         </div>
@@ -44,14 +54,28 @@
 <script>
 import axios from "@/axios/axiossetting";
 import { ref, watch } from "vue";
+
 export default {
   props: {
     orderId: {
-      type: String,
+      type: Number,
+    },
+    cancelOrderId: {
+      type: Number,
     },
   },
   setup(props, context) {
     console.log("order_id: " + props.orderId);
+    console.log("cancel_id: " + props.cancelOrderId);
+
+    const modify = ref(false);
+
+    if (props.cancelOrderId) {
+      console.log("cancelOrderId : " + props.cancelOrderId);
+      modify.value = true;
+      console.log("modify : " + modify.value);
+    }
+
     const orderCancelForm = ref({
       status: "CANCEL",
       orderId: props.orderId,
@@ -73,10 +97,34 @@ export default {
       }
     };
 
+    const updateReason = async () => {
+      try {
+        const res = await axios.put(
+          "api/order/cancel/reason",
+          getReasonUpdateForm()
+        );
+
+        alert(res.data);
+        context.emit("onModify");
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const getReasonUpdateForm = () => {
+      const reasonUpdateForm = {
+        id: props.cancelOrderId,
+        reason: orderCancelForm.value.reason,
+      };
+      return reasonUpdateForm;
+    };
+
     return {
       orderCancelForm,
+      modify,
       closeModifyView,
       cancelOrder,
+      updateReason,
     };
   },
 };
