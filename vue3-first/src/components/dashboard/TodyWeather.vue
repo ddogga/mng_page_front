@@ -1,43 +1,66 @@
 <template>
   <div class="text-white">
-    <div class="row">
-      <div class="col-sm-5">{{ dateBuilder() }}</div>
+    <div class="modal-header">
+      <div>{{ dateBuilder() }}</div>
+      <div>{{ weather.name }}</div>
     </div>
     <div class="row today-weather">
-      <div class="col-sm-4">
-        <i class="fas fa-3x fa-cloud-rain" style="color: #000"></i>
+      <div class="col-sm-4" style="text-align: right">
+        <i class="fas fa-4x" :class="[weatherIcon ? weatherIcon : '']"></i>
       </div>
-      <div class="col-sm-8">
-        <div class="row">
-          <div class="col-sm-5" style="float: left">
-            {{ weather.name }}
-          </div>
-          <div class="col-sm-7">
-            {{ weather?.main?.temp }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-5" style="float: left">
-            {{ weather?.weather?.[0]}}
-          </div>
-          <div class="col-sm-7">
-            {{ weather?.main?.temp_max }} / {{ weather?.main?.temp_min }}
-          </div>
+
+      <div class="col-sm-4" style="font-size: 1.8rem; text-align: left">
+        <div>{{ weather?.main?.temp }}°C</div>
+        <div>{{ weather?.weather?.[0].main }}</div>
+      </div>
+
+      <div class="col-sm-4" style="font-size: 0.9rem; padding-top: 10px">
+        <div>최고/최저 기온</div>
+        <div>
+          {{ weather?.main?.temp_max }}°C / {{ weather?.main?.temp_min }}°C
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col" v-for="(day, index) in days" :key="index">
+
+    <div class="row" style="margin-bottom: 2%">
+      <div class="col">
         <hr class="hr sidebar-divider" />
-        {{ day }}
+        대기오염
         <hr class="hr sidebar-divider" />
       </div>
+      <div class="col">
+        <hr class="hr sidebar-divider" />
+        체감온도
+        <hr class="hr sidebar-divider" />
+      </div>
+
+      <div class="col">
+        <hr class="hr sidebar-divider" />
+        바람세기
+        <hr class="hr sidebar-divider" />
+      </div>
+
+      <div class="col">
+        <hr class="hr sidebar-divider" />
+        습도
+        <hr class="hr sidebar-divider" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        {{ airCondition[airPollution?.list?.[0].main.aqi] }}
+      </div>
+      <div class="col">{{ weather?.main?.feels_like }} °C</div>
+      <div class="col">{{ weather?.wind?.speed }} m/s</div>
+      <div class="col">{{ weather?.main?.humidity }} %</div>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, onBeforeMount } from "vue";
+import { ICON_NAME } from "@/components/js/iconConverter.js";
 export default {
   setup() {
     const days = ["월", "화", "수", "목", "금", "토", "일"];
@@ -55,12 +78,15 @@ export default {
       "November",
       "December",
     ];
+    const airCondition = ["아주 좋음", "좋음", "보통", "나쁨", "아주 나쁨"];
 
     const api_key = "c75924f550da2e1826b251956284d2bc";
     const url_base = "https://api.openweathermap.org/data/2.5/";
     const weather = ref({});
+    const airPollution = ref({});
 
     const isPositionReady = ref(false);
+    const weatherIcon = ref("");
 
     // const getCurrentPosition = () => {
     //   if (!navigator.geolocation) {
@@ -80,8 +106,10 @@ export default {
 
       isPositionReady.value = true;
 
-      let fetchUrl = `${url_base}weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=${api_key}`;
-      fetchWeather(fetchUrl);
+      let weatherFetchUrl = `${url_base}weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=${api_key}`;
+      let airPollutionFetchUrl = `${url_base}air_pollution?lat=${latitude}&lon=${longitude}&APPID=${api_key}`;
+      fetchWeather(weatherFetchUrl);
+      fetchAirPollution(airPollutionFetchUrl);
     };
 
     const geolocationError = () => {
@@ -102,8 +130,23 @@ export default {
         });
     };
 
+    const fetchAirPollution = async (fetchUrl) => {
+      await fetch(fetchUrl)
+        .then((res) => {
+          return res.json();
+        })
+        .then((results) => {
+          console.log("air value : ");
+          console.log(results);
+          airPollution.value = results;
+        });
+    };
+
     const setResult = (results) => {
       weather.value = results;
+
+      weatherIcon.value =
+        ICON_NAME[weather.value.weather[0].icon.substring(0, 2)];
       console.log("weather value : ");
       console.log(weather.value);
     };
@@ -133,22 +176,44 @@ export default {
 
     return {
       dateBuilder,
+      airPollution,
       weather,
       days,
+      airCondition,
+      weatherIcon,
     };
   },
 };
 </script>
 
 <style scoped>
+i {
+  color: rgb(171, 171, 169);
+}
 .today-weather {
-  margin-top: 2%;
+  margin-top: 5%;
   height: 100px;
+  margin-bottom: 5%;
 }
 </style>
 
 <style scoped>
 .sidebar-divider {
   margin: 0.1rem;
+}
+
+.modal-header {
+  padding: 0px 15px 5px 15px;
+  margin-bottom: 10%;
+}
+
+.con {
+  position: relative;
+}
+
+.con-item {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>

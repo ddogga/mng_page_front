@@ -157,7 +157,9 @@
           </div>
           <!-- Card Body -->
           <div class="card-body">
-            <div class="chart-area"></div>
+            <div class="chart-area">
+              <CurrentOrder />
+            </div>
           </div>
         </div>
       </div>
@@ -338,6 +340,7 @@ import TodayEvent from "../components/dashboard/TodayEvent.vue";
 import TodayWeather from "../components/dashboard/TodyWeather.vue";
 import LineChart from "../components/dashboard/LineChart.vue";
 import PieChart from "../components/dashboard/PieChart.vue";
+import CurrentOrder from "@/components/dashboard/CurrentOrder.vue";
 
 export default {
   props: {
@@ -351,6 +354,7 @@ export default {
     PieChart,
     TodayEvent,
     TodayWeather,
+    CurrentOrder,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
