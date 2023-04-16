@@ -29,15 +29,15 @@
                 <th>회원 삭제</th>
               </thead>
               <tbody>
-                <tr v-for="(item, index) in users" :key="index">
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.createdDate }}</td>
-                  <td>{{ item.role }}</td>
+                <tr v-for="(user, index) in users" :key="index">
+                  <td>{{ startIndex + index }}</td>
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.createDate }}</td>
+                  <td>{{ user.role }}</td>
                   <td>
                     <button
                       class="btn btn-danger btn-sm"
-                      @click="userDelete(item.id)"
+                      @click="userDelete(user.id)"
                     >
                       삭제
                     </button>
@@ -45,6 +45,8 @@
                 </tr>
               </tbody>
             </table>
+
+            <Pagenation />
           </div>
           <div class="card-body" v-show="count == 0">
             회원이 존재하지 않습니다.
@@ -56,24 +58,69 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import axios from "../../axios/axiossetting.js";
+
+import Pagenation from "@/components/Pagenation.vue";
 export default {
+  components: {
+    Pagenation,
+  },
   setup(props, context) {
     context.emit("parent_getSession", "");
+    const store = useStore();
+
+    //list
     const users = ref([]);
     const count = ref(0);
+    const startIndex = ref(0);
 
-    const getUsers = async () => {
+    //page
+    const size = store.state.userListStore.size;
+    const startNum = ref(0);
+
+    // console.log(
+    //   "userList current page : " +
+    //     computed(() => store.state.userListStore.pageInfo.currentPage)
+    // );
+
+    watch(
+      () => store.state.userListStore.reqPage,
+      () => {
+        getUsers(store.state.userListStore.reqPage);
+      }
+    );
+
+    const getUsers = async (page) => {
       try {
-        const res = await axios.get("api/user/role_users", {
-          params: { role: "user" },
+        const res = await axios.get("api/users", {
+          params: { page: page - 1, size: size },
         });
-        console.log(res.data);
-        users.value = res.data;
-        count.value = users.value.length;
-      } catch (arr) {
+        console.log("userList: " + res.data.content);
+        users.value = res.data.content;
+        count.value = res.data.totalElements;
+        startIndex.value = (page - 1) * size + 1;
+
+        const totalPages = res.data.totalPages;
+        const startPageNum = parseInt((page - 1) / size + 1);
+        const endPageNum = totalPages > size ? startNum + size : totalPages + 1;
+
+        let pageList = [];
+        for (let i = startPageNum; i < endPageNum; i++) {
+          pageList.push(i);
+        }
+
+        console.log(pageList);
+        const pageInfo = {
+          totalPages: totalPages,
+          currentPage: page,
+          pageList: pageList,
+        };
+
+        store.dispatch("userListStore/update_pageInfo", pageInfo);
+      } catch (err) {
         console.log(err);
       }
     };
@@ -98,10 +145,12 @@ export default {
       }
     };
 
-    getUsers();
+    getUsers(1);
+
     return {
       users,
       count,
+      startIndex,
       userDelete,
     };
   },

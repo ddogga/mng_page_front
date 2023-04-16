@@ -49,7 +49,7 @@
 
     <div class="row">
       <div class="col">
-        {{ airCondition[airPollution?.list?.[0].main.aqi] }}
+        {{ airCondition[airPollution?.list?.[0].main.aqi - 1] }}
       </div>
       <div class="col">{{ weather?.main?.feels_like }} °C</div>
       <div class="col">{{ weather?.wind?.speed }} m/s</div>

@@ -6,29 +6,7 @@
     </div>
 
     <!-- Calendar-->
-    <div class="demo-app">
-      <!-- <div class="demo-app-sidebar">
-        <div class="demo-app-sidebar-section">
-          <label>
-            <input
-              type="checkbox"
-              :checked="calendarOptions.weekends"
-              @change="handleWeekendsToggle"
-            />
-            주말
-          </label>
-        </div>
-        <div class="demo-app-sidebar-section">
-          <h2>이번달 일정({{ currentEvents.length }})</h2>
-          <ul>
-            <li v-for="event in currentEvents" :key="event.id">
-              <b>{{ event.startStr }} </b>
-              <b> ~ {{ event.endStr }}</b>
-              <i>{{ event.title }}</i>
-            </li>
-          </ul>
-        </div>
-      </div> -->
+    <div class="demo-app text-white">
       <div class="demo-app-main">
         <FullCalendar class="demo-app-calendar" :options="calendarOptions">
         </FullCalendar>
