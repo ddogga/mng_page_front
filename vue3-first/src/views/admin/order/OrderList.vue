@@ -31,7 +31,11 @@
                 <th>주문 상태 변경</th>
               </thead>
               <tbody>
-                <tr v-for="(order, index) in orders" :key="index">
+                <tr
+                  v-for="(order, index) in orders"
+                  :key="index"
+                  :class="[clickedOrder == order.id ? clicked : '']"
+                >
                   <td>{{ order.id }}</td>
                   <td>{{ order.userName }}</td>
                   <td>{{ order.orderDate }} {{ order.orderTime }}</td>
@@ -126,6 +130,10 @@ export default {
     const orders = ref([]);
     const startIndex = ref(0);
 
+    //click row style
+    const clickedOrder = ref(0);
+    const clicked = ref("");
+
     //page
     const size = store.state.pageStore.size;
     const startNum = ref(0); //페이지 첫번째 숫자
@@ -187,13 +195,17 @@ export default {
 
     // 주문 수정 폼
     const openModifyView = (index) => {
+      clicked.value = "clicked";
+      const orderId = orders.value[index].id;
+      clickedOrder.value = orderId;
       isClicked.value = true;
       currentView.value = ModifyOrderView;
-      console.log("선택한 주문 인덱스값 " + orders.value[index].id);
+      console.log("선택한 주문 번호 " + orderId);
       orderInfo.value = orders.value[index];
     };
 
     const onClose = () => {
+      clicked.value = "";
       currentView.value = null;
       isClicked.value = false;
     };
@@ -203,6 +215,8 @@ export default {
     };
 
     const openCancelView = (id) => {
+      clicked.value = "clicked";
+      clickedOrder.value = id;
       isClicked.value = true;
       currentView.value = CancelOrderView;
       orderId.value = id;
@@ -215,6 +229,7 @@ export default {
     };
 
     getOrders(1);
+
     return {
       count,
       orders,
@@ -225,6 +240,8 @@ export default {
       isClicked,
       orderId,
       startIndex,
+      clicked,
+      clickedOrder,
       openPopup,
       openOrderItemView,
       openModifyView,
@@ -310,5 +327,9 @@ export default {
   padding: 0 15px;
   transition: width 0.25s, opacity 0.2s;
   -webkit-transition: width 0.25s, opacity 0.2s;
+}
+
+.clicked {
+  background-color: rgb(204, 204, 204);
 }
 </style>

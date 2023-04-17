@@ -34,7 +34,10 @@
                   <tr
                     v-for="(item, index) in items"
                     :key="index"
-                    :class="[item.itemStatus == 'EOS' ? isOnSale : '']"
+                    :class="[
+                      item.itemStatus == 'EOS' ? isOnSale : '',
+                      clickedRow == item.id ? clicked : '',
+                    ]"
                   >
                     <td>{{ startIndex + index }}</td>
                     <td>{{ item.name }}</td>
@@ -98,6 +101,10 @@ export default {
     const items = ref([]);
     const count = ref(0);
     const startIndex = ref(0);
+
+    //click row style
+    const clickedRow = ref(0);
+    const clicked = ref("");
 
     // page
     const size = store.state.pageStore.size;
@@ -170,12 +177,15 @@ export default {
     // };
 
     const openModifyView = (id) => {
+      clickedRow.value = id;
+      clicked.value = "clicked";
       isClicked.value = true;
       modifyView.value = ModifyView;
       selectedItemId.value = id;
     };
 
     const onClose = () => {
+      clicked.value = "";
       modifyView.value = null;
       isClicked.value = false;
     };
@@ -191,6 +201,8 @@ export default {
       modifyView,
       selectedItemId,
       startIndex,
+      clickedRow,
+      clicked,
       onClose,
       openModifyView,
       onModify,
@@ -209,7 +221,7 @@ export default {
 }
 
 .row.modify .left {
-  width: 50%;
+  width: 60%;
   padding: 0 15px;
   transition: width 0.25s;
   -webkit-transition: width 0.25s;
@@ -223,7 +235,7 @@ export default {
 }
 
 .row.modify .right {
-  width: 50%;
+  width: 40%;
   padding: 0 15px;
   transition: width 0.25s, opacity 0.2s;
   -webkit-transition: width 0.25s, opacity 0.2s;
@@ -231,5 +243,9 @@ export default {
 
 .onSale {
   color: red;
+}
+
+.clicked {
+  background-color: rgb(204, 204, 204);
 }
 </style>

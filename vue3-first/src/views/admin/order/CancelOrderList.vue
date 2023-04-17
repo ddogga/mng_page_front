@@ -31,7 +31,11 @@
                 <th>취소사유변경</th>
               </thead>
               <tbody>
-                <tr v-for="(order, index) in cancelOrders" :key="index">
+                <tr
+                  v-for="(order, index) in cancelOrders"
+                  :key="index"
+                  :class="[clickedRow == order.orderId ? clicked : '']"
+                >
                   <td>{{ order.orderId }}</td>
                   <td>{{ order.userName }}</td>
                   <td>{{ order.cancelTime }}</td>
@@ -113,6 +117,10 @@ export default {
     const cancelOrders = ref([]);
     const startIndex = ref(0);
 
+    //click row style
+    const clickedRow = ref(0);
+    const clicked = ref("");
+
     //page
     const size = store.state.pageStore.size;
     const startNum = ref(0); //페이지 첫번째 숫자
@@ -173,11 +181,14 @@ export default {
     };
 
     const onClose = () => {
+      clicked.value = "";
       currentView.value = null;
       isClicked.value = false;
     };
 
     const openCancelView = (id) => {
+      clickedRow.value = id;
+      clicked.value = "clicked";
       isClicked.value = true;
       currentView.value = CancelOrderView;
       cancelOrderId.value = id;
@@ -200,6 +211,8 @@ export default {
       isClicked,
       cancelOrderId,
       startIndex,
+      clickedRow,
+      clicked,
       openOrderItemView,
       openPopup,
       onClose,
@@ -283,5 +296,9 @@ export default {
   padding: 0 15px;
   transition: width 0.25s, opacity 0.2s;
   -webkit-transition: width 0.25s, opacity 0.2s;
+}
+
+.clicked {
+  background-color: rgb(204, 204, 204);
 }
 </style>

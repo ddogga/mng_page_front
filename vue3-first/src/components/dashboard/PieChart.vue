@@ -3,7 +3,6 @@
   <div class="card-body">
     <div class="chart-area">
       <vue3-chart-js
-        style="height: 35vh; width: 55vw"
         ref="chartRef"
         :type="pieChart.type"
         :data="pieChart.data"
