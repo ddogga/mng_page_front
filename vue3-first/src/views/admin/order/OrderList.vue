@@ -62,6 +62,8 @@
                 </tr>
               </tbody>
             </table>
+
+            <Pagenation />
           </div>
           <div class="card-body" v-show="count == 0">
             진행중인 주문이 없습니다.
@@ -98,25 +100,38 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { useStore } from "vuex";
 import axios from "@/axios/axiossetting.js";
 
 import ItemsInfo from "@/views/admin/order/ItemsInfoPopup.vue";
 import ModifyOrderView from "@/views/admin/order/ModifyOrderView.vue";
 import CancelOrderView from "@/views/admin/order/CancelOrderView.vue";
+import Pagenation from "@/components/Pagenation.vue";
 
 export default {
   components: {
     ItemsInfo,
     ModifyOrderView,
     CancelOrderView,
+    Pagenation,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
+
+    const store = useStore();
+
+    //list
     const count = ref(0);
     const orders = ref([]);
-    const selectedOrderid = ref("");
+    const startIndex = ref(0);
 
+    //page
+    const size = store.state.pageStore.size;
+    const startNum = ref(0); //페이지 첫번째 숫자
+
+    // views
+    const selectedOrderid = ref("");
     const popupView = ref(false);
 
     const currentView = ref(null);
@@ -124,12 +139,39 @@ export default {
     const isClicked = ref(false);
     const orderId = ref("");
 
-    const getOrders = async () => {
+    watch(
+      () => store.state.pageStore.reqPage,
+      () => {
+        getOrders(store.state.pageStore.reqPage);
+      }
+    );
+
+    const getOrders = async (page) => {
       try {
-        const res = await axios.get("api/orders");
-        orders.value = res.data;
-        count.value = orders.value.length;
-      } catch (arr) {
+        const res = await axios.get("api/orders", {
+          params: { page: page - 1, size: size },
+        });
+        orders.value = res.data.content;
+        count.value = res.data.totalElements;
+        startIndex.value = (page - 1) * size + 1;
+
+        const totalPages = res.data.totalPages;
+        const startPageNum = parseInt((page - 1) / size + 1);
+        const endPageNum = totalPages > size ? startNum + size : totalPages + 1;
+
+        let pageList = [];
+        for (let i = startPageNum; i < endPageNum; i++) {
+          pageList.push(i);
+        }
+
+        const pageInfo = {
+          totalPages: totalPages,
+          currentPage: page,
+          pageList: pageList,
+        };
+
+        store.dispatch("pageStore/update_pageInfo", pageInfo);
+      } catch (err) {
         console.log(err);
       }
     };
@@ -157,7 +199,7 @@ export default {
     };
 
     const onModify = () => {
-      getOrders();
+      getOrders(1);
     };
 
     const openCancelView = (id) => {
@@ -167,12 +209,12 @@ export default {
     };
 
     const onCancel = () => {
-      getOrders();
+      getOrders(1);
       currentView.value = null;
       isClicked.value = false;
     };
 
-    getOrders();
+    getOrders(1);
     return {
       count,
       orders,
@@ -182,6 +224,7 @@ export default {
       orderInfo,
       isClicked,
       orderId,
+      startIndex,
       openPopup,
       openOrderItemView,
       openModifyView,
@@ -249,7 +292,7 @@ export default {
 }
 
 .row.modify .left {
-  width: 60%;
+  width: 65%;
   padding: 0 15px;
   transition: width 0.25s;
   -webkit-transition: width 0.25s;
@@ -263,7 +306,7 @@ export default {
 }
 
 .row.modify .right {
-  width: 40%;
+  width: 35%;
   padding: 0 15px;
   transition: width 0.25s, opacity 0.2s;
   -webkit-transition: width 0.25s, opacity 0.2s;

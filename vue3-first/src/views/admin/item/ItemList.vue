@@ -181,7 +181,7 @@ export default {
     };
 
     const onModify = () => {
-      getItems();
+      getItems(1);
     };
 
     return {

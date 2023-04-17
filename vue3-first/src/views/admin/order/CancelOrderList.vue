@@ -56,6 +56,7 @@
                 </tr>
               </tbody>
             </table>
+            <Pagenation />
           </div>
           <div class="card-body" v-show="count == 0">
             진행중인 주문이 없습니다.
@@ -91,18 +92,32 @@
 <script>
 import axios from "@/axios/axiossetting";
 import { ref, watch } from "vue";
+import { useStore } from "vuex";
 
 import ItemsInfo from "@/views/admin/order/ItemsInfoPopup.vue";
 import CancelOrderView from "@/views/admin/order/CancelOrderView.vue";
+import Pagenation from "@/components/Pagenation.vue";
 export default {
   components: {
     ItemsInfo,
     CancelOrderView,
+    Pagenation,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
+
+    const store = useStore();
+
+    // list
     const count = ref(0);
     const cancelOrders = ref([]);
+    const startIndex = ref(0);
+
+    //page
+    const size = store.state.pageStore.size;
+    const startNum = ref(0); //페이지 첫번째 숫자
+
+    //views
     const selectedOrderid = ref("");
     const popupView = ref(false);
 
@@ -110,13 +125,40 @@ export default {
     const cancelOrderId = ref("");
     const isClicked = ref(false);
 
-    const getCancelOrders = async () => {
+    watch(
+      () => store.state.pageStore.reqPage,
+      () => {
+        getCancelOrders(store.state.pageStore.reqPage);
+      }
+    );
+
+    const getCancelOrders = async (page) => {
       try {
-        const res = await axios.get("api/orders/cancel");
-        console.log(res.data);
-        cancelOrders.value = res.data;
-        count.value = cancelOrders.value.length;
-      } catch (arr) {
+        const res = await axios.get("api/orders/cancel", {
+          params: { page: page - 1, size: size },
+        });
+
+        cancelOrders.value = res.data.content;
+        count.value = res.data.totalElements;
+        startIndex.value = (page - 1) * size + 1;
+
+        const totalPages = res.data.totalPages;
+        const startPageNum = parseInt((page - 1) / size + 1);
+        const endPageNum = totalPages > size ? startNum + size : totalPages + 1;
+
+        let pageList = [];
+        for (let i = startPageNum; i < endPageNum; i++) {
+          pageList.push(i);
+        }
+
+        const pageInfo = {
+          totalPages: totalPages,
+          currentPage: page,
+          pageList: pageList,
+        };
+
+        store.dispatch("pageStore/update_pageInfo", pageInfo);
+      } catch (err) {
         console.log(err);
       }
     };
@@ -147,7 +189,7 @@ export default {
       isClicked.value = false;
     };
 
-    getCancelOrders();
+    getCancelOrders(1);
 
     return {
       count,
@@ -157,6 +199,7 @@ export default {
       currentView,
       isClicked,
       cancelOrderId,
+      startIndex,
       openOrderItemView,
       openPopup,
       onClose,

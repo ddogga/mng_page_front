@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import axios from "@/axios/axiossetting.js";
@@ -78,7 +78,7 @@ export default {
     const startIndex = ref(0);
 
     //page
-    const size = store.state.userListStore.size;
+    const size = store.state.pageStore.size;
     const startNum = ref(0);
 
     // console.log(
@@ -87,9 +87,9 @@ export default {
     // );
 
     watch(
-      () => store.state.userListStore.reqPage,
+      () => store.state.pageStore.reqPage,
       () => {
-        getUsers(store.state.userListStore.reqPage);
+        getUsers(store.state.pageStore.reqPage);
       }
     );
 
@@ -117,7 +117,7 @@ export default {
           pageList: pageList,
         };
 
-        store.dispatch("userListStore/update_pageInfo", pageInfo);
+        store.dispatch("pageStore/update_pageInfo", pageInfo);
       } catch (err) {
         console.log(err);
       }
@@ -133,7 +133,7 @@ export default {
           console.log(res.data);
           if (res.data.result == "SUCCESS") {
             alert("삭제 성공");
-            getUsers();
+            getUsers(1);
           } else if (res.data.result == "FAIL") {
             alert(res.data.reason);
           }

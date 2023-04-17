@@ -1,6 +1,6 @@
 <template>
   <div class="text-white">
-    <div class="card" v-show="count > 0">
+    <div class="card pre-scrollable" v-show="count > 0">
       <table class="table">
         <thead class="table-light">
           <th>주문 번호</th>
@@ -49,11 +49,11 @@ export default {
 
     const setTime = (index) => {
       getTime(index);
-      interval = setInterval(getTime, 60000, index); //index를 매개변수로 넘겨 getTime 실행
+      interval = setInterval(getTime, 100000, index); //index를 매개변수로 넘겨 getTime 실행
     };
 
     const getTime = (index) => {
-      console.log("getTime");
+      console.log(orders.value[index].id + " getTime");
       const time = orders.value[index].orderTime.substr(0, 5);
       const now = new Date();
 
@@ -75,3 +75,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.card {
+  height: 300px;
+}
+</style>
