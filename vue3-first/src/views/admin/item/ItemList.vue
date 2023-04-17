@@ -36,7 +36,7 @@
                     :key="index"
                     :class="[item.itemStatus == 'EOS' ? isOnSale : '']"
                   >
-                    <td>{{ index + 1 }}</td>
+                    <td>{{ startIndex + index }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.price }}</td>
                     <td>{{ item.stockQuantity }}</td>
@@ -52,6 +52,8 @@
                   </tr>
                 </tbody>
               </table>
+
+              <Pagenation />
             </div>
             <div class="card-body" v-show="count == 0">
               상품이 존재하지 않습니다.
@@ -74,40 +76,78 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import axios from "@/axios/axiossetting.js";
 
 import ModifyView from "./ModifyView.vue";
+import Pagenation from "@/components/Pagenation.vue";
 
 export default {
   components: {
     ModifyView,
+    Pagenation,
   },
   setup(props, context) {
     context.emit("parent_getSession", "");
     const router = useRouter();
+    const store = useStore();
 
+    // list
     const items = ref([]);
     const count = ref(0);
+    const startIndex = ref(0);
 
+    // page
+    const size = store.state.pageStore.size;
+    const startNum = ref(0);
+
+    // modify view
     const isClicked = ref(false);
     const modifyView = ref(null);
     const selectedItemId = ref(0);
     const isOnSale = ref("onSale");
 
-    const getItems = async () => {
+    watch(
+      () => store.state.pageStore.reqPage,
+      () => {
+        getItems(store.state.pageStore.reqPage);
+      }
+    );
+
+    const getItems = async (page) => {
       try {
-        const res = await axios.get("api/items");
-        console.log(res.data);
-        items.value = res.data;
-        count.value = items.value.length;
+        const res = await axios.get("api/items", {
+          params: { page: page - 1, size: size },
+        });
+
+        items.value = res.data.content;
+        count.value = res.data.totalElements;
+        startIndex.value = (page - 1) * size + 1;
+
+        const totalPages = res.data.totalPages;
+        const startPageNum = parseInt((page - 1) / size + 1);
+        const endPageNum = totalPages > size ? startNum + size : totalPages + 1;
+
+        let pageList = [];
+        for (let i = startPageNum; i < endPageNum; i++) {
+          pageList.push(i);
+        }
+
+        const pageInfo = {
+          totalPages: totalPages,
+          currentPage: page,
+          pageList: pageList,
+        };
+
+        store.dispatch("pageStore/update_pageInfo", pageInfo);
       } catch (err) {
         console.log(err);
       }
     };
 
-    getItems();
+    getItems(1);
 
     // const deleteItem = async (id) => {
     //   const answer = confirm("정말 삭제하시겠습니까?");
@@ -150,6 +190,7 @@ export default {
       isClicked,
       modifyView,
       selectedItemId,
+      startIndex,
       onClose,
       openModifyView,
       onModify,

@@ -46,18 +46,18 @@ export default {
     const pageList = ref([]); // size에
 
     watch(
-      () => store.state.userListStore.pageInfo,
+      () => store.state.pageStore.pageInfo,
       () => {
-        totalPages.value = store.state.userListStore.pageInfo.totalPages;
-        currentPage.value = store.state.userListStore.pageInfo.currentPage;
-        pageList.value = store.state.userListStore.pageInfo.pageList;
+        totalPages.value = store.state.pageStore.pageInfo.totalPages;
+        currentPage.value = store.state.pageStore.pageInfo.currentPage;
+        pageList.value = store.state.pageStore.pageInfo.pageList;
       }
     );
 
     //페이지 네이션의 페이지 번호를 클릭한 경우
     //store의 state.page 값을 선택한 페이지로 변경합니다.
     const getList = (page) => {
-      store.dispatch("userListStore/update_page", page);
+      store.dispatch("pageStore/update_page", page);
     };
 
     return {

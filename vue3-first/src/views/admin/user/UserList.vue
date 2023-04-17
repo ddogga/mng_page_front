@@ -61,7 +61,7 @@
 import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import axios from "../../axios/axiossetting.js";
+import axios from "@/axios/axiossetting.js";
 
 import Pagenation from "@/components/Pagenation.vue";
 export default {
@@ -98,7 +98,6 @@ export default {
         const res = await axios.get("api/users", {
           params: { page: page - 1, size: size },
         });
-        console.log("userList: " + res.data.content);
         users.value = res.data.content;
         count.value = res.data.totalElements;
         startIndex.value = (page - 1) * size + 1;
@@ -112,7 +111,6 @@ export default {
           pageList.push(i);
         }
 
-        console.log(pageList);
         const pageInfo = {
           totalPages: totalPages,
           currentPage: page,

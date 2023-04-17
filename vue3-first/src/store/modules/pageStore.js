@@ -1,4 +1,4 @@
-const userListStore = {
+const pageStore = {
   namespaced: true,
   state: () => ({
     size: 5,
@@ -48,4 +48,4 @@ const userListStore = {
   },
 };
 
-export default userListStore;
+export default pageStore;

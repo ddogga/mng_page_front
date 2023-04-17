@@ -1,12 +1,12 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
-import userListStore from "@/store/modules/userListStore.js";
+import pageStore from "@/store/modules/pageStore.js";
 
 export default createStore({
   modules: {
     //store.state.명시된 store 모듈 이름.state값으로 접근
-    userListStore: userListStore,
+    pageStore: pageStore,
   },
   state: {
     userName: "",
