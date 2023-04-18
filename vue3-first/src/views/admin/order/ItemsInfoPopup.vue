@@ -4,7 +4,9 @@
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
       >
-        <h6 class="m-0 font-weight-bold text-primary">주문 상품 목록</h6>
+        <h6 class="m-0 font-weight-bold text-primary">
+          주문 번호 : {{ orderId }} 상품 목록
+        </h6>
         <div>
           <button class="btn" @click="closePopup()">x</button>
         </div>
@@ -48,6 +50,7 @@ export default {
   emits: ["close-popup"],
   setup(props, context) {
     const orderItems = ref([]);
+    const orderId = ref("");
 
     const closePopup = () => {
       context.emit("close-popup");
@@ -57,6 +60,7 @@ export default {
       () => props.selectedOrderid,
       (next, prev) => {
         console.log("selectedId : " + props.selectedOrderid);
+        orderId.value = props.selectedOrderid;
 
         getOrderItems();
       }
@@ -77,6 +81,7 @@ export default {
 
     return {
       orderItems,
+      orderId,
       closePopup,
     };
   },
@@ -92,5 +97,9 @@ export default {
 
 .row {
   border-radius: 30px;
+}
+
+th {
+  font-size: 0.5rem;
 }
 </style>

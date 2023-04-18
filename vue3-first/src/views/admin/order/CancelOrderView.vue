@@ -4,7 +4,7 @@
       class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
     >
       <h6 class="m-0 font-weight-bold text-primary">
-        <b>주문번호 : {{ orderCancelForm.orderId }}</b>
+        <b>취소사유 변경</b>
       </h6>
       <div>
         <button class="btn btn-info btn-sm" @click="closeModifyView">

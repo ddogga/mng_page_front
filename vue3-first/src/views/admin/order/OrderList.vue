@@ -276,13 +276,13 @@ export default {
 .pop-up {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 40%;
   background-color: #ffffff;
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
   padding: 0;
 
   /* 임시 지정 */
-  width: 35%;
+  width: 40%;
   height: 60%;
 
   /* 초기에 약간 아래에 배치 */

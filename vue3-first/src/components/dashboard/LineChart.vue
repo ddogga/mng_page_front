@@ -93,6 +93,7 @@ export default {
             position: "bottom",
             labels: {
               usePointStyle: true,
+              color: "white",
             },
           },
         },
@@ -100,6 +101,7 @@ export default {
           y: {
             ticks: {
               beginAtZero: true,
+              color: "white",
             },
             gridLines: {
               display: true,
@@ -107,6 +109,9 @@ export default {
           },
 
           x: {
+            ticks: {
+              color: "white",
+            },
             gridLines: {
               display: false,
             },
