@@ -162,7 +162,7 @@ export default {
     const addEvent = async () => {
       try {
         eventInfo.value.userName = store.state.userName;
-        const res = await axios.post("api/event/new", eventInfo.value);
+        const res = await axios.post("api/event", eventInfo.value);
         console.log(res.data);
         context.emit("reload");
       } catch (err) {

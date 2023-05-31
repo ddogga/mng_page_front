@@ -99,7 +99,7 @@ export default {
 
     const insertItemProcess = async () => {
       try {
-        const res = await axios.post("api/item/new", newItem.value);
+        const res = await axios.post("api/item", newItem.value);
         if (res.data) {
           console.log(res.data);
           alert("상품이 등록되었습니다.");
